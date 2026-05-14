@@ -1,7 +1,11 @@
 import axios from "axios";
 
-const api = axios.create({
+/*const api = axios.create({
   baseURL: "http://localhost:8081",
+});*/
+
+const api = axios.create({
+  baseURL: "http://yamanote.proxy.rlwy.net:57257",
 });
 
 // =========================
