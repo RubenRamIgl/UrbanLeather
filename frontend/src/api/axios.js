@@ -5,7 +5,7 @@ import axios from "axios";
 });*/
 
 const api = axios.create({
-  baseURL: "https://yamanote.proxy.rlwy.net:57257",
+  baseURL: "https://urbanleather.vercel.app",
 });
 
 // =========================
