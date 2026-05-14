@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,7 +52,12 @@ public class FileController {
 
             System.out.println("Imagen guardada correctamente");
 
-            String url = "http://localhost:8081/files/" + fileName;
+            //String url = "http://localhost:8081/files/" + fileName;
+            String url = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/files/")
+                    .path(fileName)
+                    .toUriString();
 
             System.out.println("URL generada: " + url);
 
