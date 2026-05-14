@@ -5,7 +5,7 @@ import axios from "axios";
 });*/
 
 const api = axios.create({
-  baseURL: "http://yamanote.proxy.rlwy.net:57257",
+  baseURL: "https://yamanote.proxy.rlwy.net:57257",
 });
 
 // =========================
