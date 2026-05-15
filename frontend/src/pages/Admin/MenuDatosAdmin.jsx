@@ -3,6 +3,7 @@ import userIcon from "../../assets/images/UserElipse.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import arrow from "../../assets/images/arrow-left-circle.svg";
 
 function MenuDatosAdmin() {
 
