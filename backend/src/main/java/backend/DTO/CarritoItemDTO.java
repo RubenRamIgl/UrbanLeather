@@ -2,6 +2,7 @@ package backend.DTO;
 
 public class CarritoItemDTO {
 
+    private Long itemId;
     private Long productoId;
     private String nombreProducto;
     private String talla;
@@ -9,11 +10,20 @@ public class CarritoItemDTO {
 
     public CarritoItemDTO() {}
 
-    public CarritoItemDTO(Long productoId, String nombreProducto, String talla, int cantidad) {
+    public CarritoItemDTO(Long itemId, Long productoId, String nombreProducto, String talla, int cantidad) {
+        this.itemId = itemId;
         this.productoId = productoId;
         this.nombreProducto = nombreProducto;
         this.talla = talla;
         this.cantidad = cantidad;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public Long getProductoId() {

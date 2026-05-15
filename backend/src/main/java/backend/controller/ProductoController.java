@@ -46,4 +46,9 @@ public class ProductoController {
         productoService.eliminarProducto(id);
         return ResponseEntity.ok("Producto eliminado correctamente");
     }
+
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<ProductoDTO> obtenerProductoPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(productoService.obtenerProductoPorId(id));
+    }
 }

@@ -104,6 +104,7 @@ public class ProductoService {
                             .findByProductoId(p.getId())
                             .stream()
                             .map(t -> new TallaDTO(
+                                    t.getId(),
                                     t.getNombre().name(),
                                     t.getStock()
                             ))
@@ -171,5 +172,35 @@ public class ProductoService {
         productoRepository.delete(producto);
 
         return true;
+    }
+
+    public ProductoDTO obtenerProductoPorId(Long id) {
+
+        Producto p = productoRepository.findById(id)
+                .orElseThrow(() -> new NoEncontradoException("Producto no encontrado"));
+
+        ProductoDTO dto = new ProductoDTO(
+                p.getId(),
+                p.getNombre(),
+                p.getDescripcion(),
+                p.getPrecio(),
+                p.getColor(),
+                p.getImagenUrl(),
+                p.getCategoria().getNombre()
+        );
+
+        List<TallaDTO> tallas = tallaRepository
+                .findByProductoId(p.getId())
+                .stream()
+                .map(t -> new TallaDTO(
+                        t.getId(),
+                        t.getNombre().name(),
+                        t.getStock()
+                ))
+                .toList();
+
+        dto.setTallas(tallas);
+
+        return dto;
     }
 }

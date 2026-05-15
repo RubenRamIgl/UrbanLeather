@@ -1,12 +1,25 @@
 import "./SeccionMujer.css";
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import heart from "../../assets/images/heart.svg";
 
 function SeccionMujer() {
 
   const [productos, setProductos] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // =========================
+  // FILTRO URL
+  // =========================
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    setFilter(params.get("filter") || "");
+  }, [location.search]);
 
   // =========================
   // CARGAR PRODUCTOS BACKEND
@@ -17,9 +30,6 @@ function SeccionMujer() {
 
         const res = await api.get("/productos");
 
-        // =========================
-        // FILTRAR SOLO MUJER
-        // =========================
         const mujer = res.data.filter(
           (p) => p.categoriaNombre === "Mujer"
         );
@@ -34,21 +44,30 @@ function SeccionMujer() {
     fetchProductos();
   }, []);
 
+  // =========================
+  // FILTRO EN TIEMPO REAL
+  // =========================
+  const productosFiltrados = productos.filter((p) =>
+    p.nombre.toLowerCase().includes(filter.toLowerCase())
+  );
+
   return (
     <div className="seccion-mujer">
 
-      {/* TITULO */}
       <div className="titulo">
         <p>MUJER</p>
       </div>
 
-      {/* PRODUCTOS */}
       <div className="chaquetas-container">
 
-        {productos.map((item) => (
-          <div className="chaqueta" key={item.id}>
+        {productosFiltrados.map((item) => (
+          <div
+            className="chaqueta"
+            key={item.id}
+            onClick={() => navigate(`/producto/${item.id}`)}
+            style={{ cursor: "pointer" }}
+          >
 
-            {/* IMAGEN DINÁMICA */}
             <img
               src={item.imagen_url}
               alt={item.nombre}

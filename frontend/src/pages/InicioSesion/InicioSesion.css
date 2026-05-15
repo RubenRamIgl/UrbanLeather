@@ -19,10 +19,10 @@
     font-size: 32px;
 }
 
-/* Botón volver (AHORA A LA IZQUIERDA) */
+/* Botón volver */
 .volver {
     position: absolute;
-    left: 20px; /* 🔥 cambiado de right → left */
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
 
@@ -77,7 +77,7 @@
 /* Texto inferior */
 .noRegistrado {
     font-weight: bold;
-    margin-top: 10px; /* 🔥 separa del botón */
+    margin-top: 10px;
 }
 
 /* Link registro */

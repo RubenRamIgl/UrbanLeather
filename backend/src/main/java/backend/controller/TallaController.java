@@ -1,5 +1,6 @@
 package backend.controller;
 
+import backend.DTO.TallaDTO;
 import backend.DTO.TallaRegisterDTO;
 import backend.model.Talla;
 import backend.service.TallaService;
@@ -33,7 +34,7 @@ public class TallaController {
 
 
     @GetMapping("/tallas/producto/{productoId}")
-    public ResponseEntity<List<Talla>> listarPorProducto(@PathVariable Long productoId) {
+    public ResponseEntity<List<TallaDTO>> listarPorProducto(@PathVariable Long productoId) {
 
         return ResponseEntity.ok(tallaService.listarPorProducto(productoId));
     }

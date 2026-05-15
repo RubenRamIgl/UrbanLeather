@@ -40,7 +40,7 @@ function InicioSesion() {
 
       const role = perfil.data.roles;
 
-      localStorage.setItem("role", role); // 👈 CLAVE
+      localStorage.setItem("role", role);
 
       // 3. REDIRIGIR
       navigate("/");

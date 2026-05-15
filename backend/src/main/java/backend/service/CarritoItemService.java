@@ -24,6 +24,9 @@ public class CarritoItemService {
     @Autowired
     private TallaRepository tallaRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
 
     public boolean addItem(String username, Long productoId, Long tallaId, int cantidad) {
 
@@ -32,7 +35,13 @@ public class CarritoItemService {
         }
 
         Carrito carrito = carritoRepository.findByUsuarioUsername(username)
-                .orElseThrow(() -> new NoEncontradoException("Carrito no encontrado"));
+                .orElseGet(() -> {
+                    Usuario usuario = usuarioRepository.findByUsername(username)
+                            .orElseThrow(() -> new NoEncontradoException("Usuario no encontrado"));
+
+                    Carrito nuevo = new Carrito(usuario);
+                    return carritoRepository.save(nuevo);
+                });
 
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new NoEncontradoException("Producto no encontrado"));

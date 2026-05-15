@@ -93,6 +93,7 @@ public class CarritoService {
         List<CarritoItemDTO> items = carrito.getItems()
                 .stream()
                 .map(i -> new CarritoItemDTO(
+                        i.getId(),
                         i.getProducto().getId(),
                         i.getProducto().getNombre(),
                         i.getTalla().getNombre().name(),
@@ -123,6 +124,8 @@ public class CarritoService {
 
         Carrito carrito = carritoRepository.findByUsuarioUsername(username)
                 .orElseThrow(() -> new NoEncontradoException("Carrito no encontrado"));
+
+        carrito.getItems().clear();
 
         carritoItemRepository.deleteAll(carrito.getItems());
 

@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import logo from "../../assets/images/Logo.png";
-import search from "../../assets/images/search.svg";
 import user from "../../assets/images/user.svg";
 import userCheck from "../../assets/images/user-check.svg";
 import bag from "../../assets/images/shopping-bag.svg";
@@ -18,6 +18,8 @@ function Header() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [showFilter, setShowFilter] = useState(false);
+
   const isHome = location.pathname === "/";
   const isShop =
     location.pathname === "/hombre" || location.pathname === "/mujer";
@@ -25,7 +27,7 @@ function Header() {
   const isUser = location.pathname === "/usuario";
 
   const isLogged = localStorage.getItem("isLogged") === "true";
-  const role = localStorage.getItem("role"); // 👈 AQUÍ ESTÁ LA CLAVE
+  const role = localStorage.getItem("role");
 
   const handleUserClick = () => {
     if (!isLogged) {
@@ -40,6 +42,20 @@ function Header() {
     }
   };
 
+  // 🔥 FILTRO EN TIEMPO REAL (actualiza URL)
+  const handleFilterChange = (e) => {
+    const value = e.target.value;
+
+    const path =
+      location.pathname === "/hombre"
+        ? "/hombre"
+        : location.pathname === "/mujer"
+        ? "/mujer"
+        : location.pathname;
+
+    navigate(`${path}?filter=${value}`);
+  };
+
   return (
     <header className="header">
 
@@ -47,19 +63,27 @@ function Header() {
 
       {isShop && (
         <div className="central">
-          <div className="ordenar">
-            <a className="sort">
-              Sort by
-              <img src={sortIcon} alt="sort" />
-            </a>
-          </div>
 
-          <div className="filtrar">
-            <a className="filter">
-              Filter
-              <img src={filterIcon} alt="filter" />
-            </a>
-          </div>
+          <a
+            className="filter"
+            onClick={() => setShowFilter(!showFilter)}
+            style={{ cursor: "pointer" }}
+          >
+            Filter
+            <img src={filterIcon} alt="filter" />
+          </a>
+
+          {showFilter && (
+            <div className="filter-box">
+              <input
+                type="text"
+                placeholder="Buscar productos..."
+                onChange={handleFilterChange}
+                className="filter-input"
+              />
+            </div>
+          )}
+
         </div>
       )}
 
@@ -77,9 +101,6 @@ function Header() {
           </Link>
         )}
 
-        <img src={search} alt="search" />
-
-        {/* 👇 AQUÍ CAMBIA TODO */}
         <img
           src={isLogged ? userCheck : user}
           alt="user"
@@ -87,7 +108,12 @@ function Header() {
           style={{ cursor: "pointer" }}
         />
 
-        <img src={bag} alt="bag" />
+        <img
+          src={bag}
+          alt="bag"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/carrito")}
+        />
 
         {isHome && (
           <>

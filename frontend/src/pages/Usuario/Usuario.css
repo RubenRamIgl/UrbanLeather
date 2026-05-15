@@ -20,7 +20,7 @@
     height: auto;
 }
 
-/* Opciones estilo "formulario login" */
+/* formulario login */
 .opciones {
     display: flex;
     flex-direction: column;
@@ -105,7 +105,6 @@
     border-color: black;
 }
 
-/* Botón dentro del form (ya lo tienes, pero lo refuerzo visualmente) */
 .formDireccion .cerrarSesion {
     width: 260px;
 }

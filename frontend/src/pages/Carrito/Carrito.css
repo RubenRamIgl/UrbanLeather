@@ -1,0 +1,119 @@
+.carrito-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.carrito-container h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   ITEM DEL CARRITO
+========================= */
+.carrito-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 12px;
+  border-bottom: 1px solid #e5e5e5;
+
+  transition: background 0.2s ease;
+}
+
+.carrito-item:hover {
+  background: #f7f7f7;
+}
+
+/* INFO PRODUCTO */
+.carrito-item .info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* NOMBRE DEL PRODUCTO */
+.carrito-item .nombre {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+}
+
+/* DETALLES (TALLA + CANTIDAD) */
+.carrito-item .detalle {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* =========================
+   BOTÓN ELIMINAR
+========================= */
+.carrito-item button {
+  padding: 8px 14px;
+  border: none;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+
+  border-radius: 4px;
+  transition: 0.2s ease;
+}
+
+.carrito-item button:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   BOTÓN VACIAR
+========================= */
+.vaciar {
+  margin-top: 25px;
+  padding: 12px 18px;
+
+  background: transparent;
+  border: 1px solid #000;
+
+  cursor: pointer;
+  font-size: 15px;
+
+  transition: 0.3s ease;
+}
+
+.vaciar:hover {
+  background: black;
+  color: white;
+}
+
+/* =========================
+   ESTADO VACÍO
+========================= */
+.carrito-container p {
+  font-size: 16px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 600px) {
+  .carrito-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .carrito-item button {
+    width: 100%;
+  }
+
+  .vaciar {
+    width: 100%;
+  }
+}

@@ -50,6 +50,11 @@ function MenuDatosAdmin() {
   const [productoEncontrado, setProductoEncontrado] = useState(null);
   const [productoEditando, setProductoEditando] = useState(null);
 
+  const [showGestionStock, setShowGestionStock] = useState(false);
+  const [searchStockProducto, setSearchStockProducto] = useState("");
+  const [productoStock, setProductoStock] = useState(null);
+  const [tallasStock, setTallasStock] = useState([]);
+
   // =========================
   // CHANGE PRODUCTO
   // =========================
@@ -303,9 +308,7 @@ function MenuDatosAdmin() {
       }
     };
 
-    // =========================
-    // 💾 GUARDAR USUARIO
-    // =========================
+
     const handleSubmitUsuario = async (e) => {
       e.preventDefault();
 
@@ -324,6 +327,46 @@ function MenuDatosAdmin() {
         alert("Error al actualizar usuario");
       }
     };
+
+  const buscarProductoStock = async () => {
+    try {
+      const res = await api.get("/productos");
+
+      const prod = res.data.find(
+        p => p.nombre.toLowerCase() === searchStockProducto.toLowerCase()
+      );
+
+      if (!prod) {
+        alert("Producto no encontrado");
+        return;
+      }
+
+      setProductoStock(prod);
+
+      const tallasRes = await api.get(`/tallas/producto/${prod.id}`);
+
+      console.log("TALLAS RESPONSE:", tallasRes.data);
+      console.log("ES ARRAY?:", Array.isArray(tallasRes.data));
+      setTallasStock(Array.isArray(tallasRes.data) ? tallasRes.data : []);
+
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const cambiarStock = async (tallaId, cantidad) => {
+    const talla = tallasStock.find(t => t.id === tallaId);
+
+    const nuevoStock = Number(talla.stock) + cantidad;
+
+    if (nuevoStock < 0) return;
+
+    await api.put(`/tallaUpdate/${tallaId}?stock=${nuevoStock}`);
+
+    const res = await api.get(`/tallas/producto/${productoStock.id}`);
+    setTallasStock(Array.isArray(res.data) ? res.data : []);
+  };
 
   // =========================
   // LOGOUT
@@ -357,7 +400,15 @@ function MenuDatosAdmin() {
           Modificar producto
         </p>
 
-        <p>Cerrar sesión</p>
+        <p onClick={() => {
+          setShowGestionStock(true);
+          setShowProducto(false);
+          setShowBuscarProducto(false);
+          setShowModificarProducto(false);
+          setShowBuscarUsuario(false);
+        }}>
+          Gestionar stock tallas
+        </p>
 
         <p className="logout" onClick={handleLogout}>
           Cerrar sesión
@@ -436,7 +487,7 @@ function MenuDatosAdmin() {
 
                 {direccion ? (
                   <>
-                    <p>📍 Dirección:</p>
+                    <p>Dirección:</p>
                     <p>{direccion.calle}, {direccion.numero}</p>
                     <p>{direccion.cp} - {direccion.municipio}</p>
                     <p>{direccion.provincia}</p>
@@ -565,7 +616,51 @@ function MenuDatosAdmin() {
         </div>
       )}
 
+      {showGestionStock && (
+        <div className="formDireccion">
+
+          <input
+            placeholder="Nombre producto"
+            value={searchStockProducto}
+            onChange={(e) => setSearchStockProducto(e.target.value)}
+          />
+
+          <button onClick={buscarProductoStock}>
+            Buscar producto
+          </button>
+
+          {productoStock && (
+            <div>
+
+              <h4>{productoStock.nombre}</h4>
+
+              {tallasStock.map((t) => (
+                <div key={t.id} style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+
+                  <span>{t.nombre}</span>
+
+                  <span>Stock: {t.stock}</span>
+
+                  <button onClick={() => cambiarStock(t.id, 1)}>
+                    +
+                  </button>
+
+                  <button onClick={() => cambiarStock(t.id, -1)}>
+                    -
+                  </button>
+
+                </div>
+              ))}
+
+            </div>
+          )}
+
+        </div>
+      )}
+
     </div>
+
+
   );
 }
 

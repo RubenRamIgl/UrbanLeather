@@ -1,0 +1,124 @@
+.producto-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+
+  padding: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================
+   IMAGEN
+========================= */
+.producto-img {
+  width: 200px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================
+   INFO
+========================= */
+.producto-info {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 400px;
+}
+
+.producto-info h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.producto-info p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* precio destacado */
+.producto-info .precio {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* =========================
+   BOTÓN
+========================= */
+.producto-info button {
+  margin-top: 30px;
+  padding: 12px 20px;
+
+  background-color: black;
+  color: white;
+
+  border: none;
+  border-radius: 6px;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.producto-info button:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+/* seleccionada */
+  .tallas button.active {
+    background: black;
+    color: white;
+  }
+
+  /* SIN STOCK */
+  .tallas button.disabled {
+    background: #e0e0e0;
+    color: #888;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .producto-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+  }
+
+  .producto-img {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .producto-info {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .producto-info button {
+    width: 100%;
+  }
+
+  .tallas button {
+    padding: 8px 12px;
+    margin-right: 8px;
+    border: 1px solid #000;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+
+}

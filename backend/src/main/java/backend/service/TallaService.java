@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.DTO.TallaDTO;
 import backend.DTO.TallaRegisterDTO;
 import backend.error.excepciones.NoEncontradoException;
 import backend.error.excepciones.PeticionIncorrectaException;
@@ -50,13 +51,20 @@ public class TallaService {
     }
 
 
-    public List<Talla> listarPorProducto(Long productoId) {
+    public List<TallaDTO> listarPorProducto(Long productoId) {
 
         if (!productoRepository.existsById(productoId)) {
             throw new NoEncontradoException("Producto no encontrado");
         }
 
-        return tallaRepository.findByProductoId(productoId);
+        return tallaRepository.findByProductoId(productoId)
+                .stream()
+                .map(t -> new TallaDTO(
+                        t.getId(),
+                        t.getNombre().name(),
+                        t.getStock()
+                ))
+                .toList();
     }
 
 

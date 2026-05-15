@@ -12,6 +12,9 @@ import MenuDatosUsuario from "../pages/Usuario/MenuDatosUsuario";
 
 import MenuDatosAdmin from "../pages/Admin/MenuDatosAdmin";
 
+import Producto from "../pages/Producto/Producto";
+import Carrito from "../pages/Carrito/Carrito";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -28,6 +31,10 @@ function AppRoutes() {
 
       {/* ADMIN */}
       <Route path="/admin/menu" element={<MenuDatosAdmin />} />
+
+      <Route path="/producto/:id" element={<Producto />} />
+      <Route path="/carrito" element={<Carrito />} />
+
     </Routes>
   );
 }

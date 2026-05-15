@@ -18,3 +18,21 @@
     align-items: center;
     margin-left: auto;
 }
+
+.filter-box {
+  position: absolute;
+  top: 70px;
+  right: 120px;
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.filter-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
