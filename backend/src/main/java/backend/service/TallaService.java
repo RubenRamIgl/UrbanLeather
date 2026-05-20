@@ -22,6 +22,14 @@ public class TallaService {
     @Autowired
     private ProductoRepository productoRepository;
 
+    /**
+     * Crea una nueva talla asociada a un producto.
+     *
+     * @param dto datos necesarios para registrar la talla
+     * @return true si la talla se creó correctamente
+     * @throws PeticionIncorrectaException si el nombre es nulo o el stock es negativo
+     * @throws NoEncontradoException si el producto no existe
+     */
     public boolean crearTalla(TallaRegisterDTO dto) {
 
         if (dto.getNombre() == null) {
@@ -46,11 +54,23 @@ public class TallaService {
     }
 
 
+    /**
+     * Obtiene todas las tallas registradas en el sistema.
+     *
+     * @return lista de todas las tallas
+     */
     public List<Talla> listarTallas() {
         return tallaRepository.findAll();
     }
 
 
+    /**
+     * Lista todas las tallas asociadas a un producto específico.
+     *
+     * @param productoId identificador del producto
+     * @return lista de tallas en formato DTO
+     * @throws NoEncontradoException si el producto no existe
+     */
     public List<TallaDTO> listarPorProducto(Long productoId) {
 
         if (!productoRepository.existsById(productoId)) {
@@ -67,7 +87,13 @@ public class TallaService {
                 .toList();
     }
 
-
+    /**
+     * Elimina una talla del sistema por su ID.
+     *
+     * @param id identificador de la talla
+     * @return true si la eliminación fue exitosa
+     * @throws NoEncontradoException si la talla no existe
+     */
     public boolean eliminarTalla(Long id) {
 
         Talla talla = tallaRepository.findById(id)
@@ -78,7 +104,15 @@ public class TallaService {
         return true;
     }
 
-
+    /**
+     * Actualiza el stock disponible de una talla.
+     *
+     * @param id identificador de la talla
+     * @param stock nuevo valor de stock
+     * @return talla actualizada
+     * @throws PeticionIncorrectaException si el stock es negativo
+     * @throws NoEncontradoException si la talla no existe
+     */
     public Talla actualizarStock(Long id, int stock) {
 
         if (stock < 0) {

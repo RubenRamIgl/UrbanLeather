@@ -25,6 +25,15 @@ public class DireccionService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    /**
+     * Registra una dirección asociada a un usuario (modo administrador).
+     *
+     * @param dto datos de la dirección a registrar
+     * @return true si la dirección fue creada correctamente
+     * @throws PeticionIncorrectaException si los datos son inválidos
+     * @throws NoEncontradoException si el usuario no existe
+     * @throws DuplicadoException si el usuario ya tiene una dirección
+     */
     public boolean registerDireccion(DireccionAdminDTO dto) {
 
         validar(dto.getNumero(), dto.getCp(), dto.getProvincia(), dto.getMunicipio());
@@ -53,7 +62,14 @@ public class DireccionService {
         return true;
     }
 
-
+    /**
+     * Actualiza la dirección de un usuario (modo administrador).
+     *
+     * @param dto datos actualizados de la dirección
+     * @return DTO con los datos actualizados
+     * @throws PeticionIncorrectaException si los datos son inválidos
+     * @throws NoEncontradoException si la dirección no existe
+     */
     public DireccionAdminDTO actualizarDireccion(DireccionAdminDTO dto) {
 
         validar(dto.getNumero(), dto.getCp(), dto.getProvincia(), dto.getMunicipio());
@@ -79,7 +95,13 @@ public class DireccionService {
         );
     }
 
-
+    /**
+     * Elimina la dirección de un usuario (modo administrador).
+     *
+     * @param username nombre de usuario
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si la dirección no existe
+     */
     public boolean eliminarDireccion(String username) {
 
         Direccion direccion = direccionRepository.findByUsuarioUsername(username)
@@ -90,7 +112,15 @@ public class DireccionService {
         return true;
     }
 
-
+    /**
+     * Registra la dirección del usuario autenticado.
+     *
+     * @param dto datos de la dirección
+     * @return true si la dirección fue creada correctamente
+     * @throws PeticionIncorrectaException si los datos son inválidos
+     * @throws NoEncontradoException si el usuario no existe
+     * @throws DuplicadoException si el usuario ya tiene dirección
+     */
     public boolean registerMiDireccion(DireccionRegisterDTO dto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -121,7 +151,14 @@ public class DireccionService {
         return true;
     }
 
-
+    /**
+     * Actualiza la dirección del usuario autenticado.
+     *
+     * @param dto nuevos datos de la dirección
+     * @return DTO con los datos actualizados
+     * @throws PeticionIncorrectaException si los datos son inválidos
+     * @throws NoEncontradoException si la dirección no existe
+     */
     public DireccionRegisterDTO actualizarMiDireccion(DireccionRegisterDTO dto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -142,7 +179,12 @@ public class DireccionService {
         return dto;
     }
 
-
+    /**
+     * Elimina la dirección del usuario autenticado.
+     *
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si no existe dirección
+     */
     public boolean eliminarMiDireccion() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -155,7 +197,12 @@ public class DireccionService {
         return true;
     }
 
-
+    /**
+     * Obtiene la dirección del usuario autenticado.
+     *
+     * @return dirección en formato DTO
+     * @throws NoEncontradoException si no existe dirección
+     */
     public DireccionDTO obtenerMiDireccion() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -172,6 +219,12 @@ public class DireccionService {
         );
     }
 
+    /**
+     * Obtiene la dirección del usuario autenticado.
+     *
+     * @return dirección en formato DTO
+     * @throws NoEncontradoException si no existe dirección
+     */
     public DireccionDTO obtenerDireccion(String username) {
 
         Direccion d = direccionRepository.findByUsuarioUsername(username)
@@ -186,7 +239,15 @@ public class DireccionService {
         );
     }
 
-
+    /**
+     * Valida los campos de una dirección.
+     *
+     * @param numero número de la calle
+     * @param cp código postal (debe tener 5 dígitos)
+     * @param provincia nombre de la provincia
+     * @param municipio nombre del municipio
+     * @throws PeticionIncorrectaException si algún campo es inválido
+     */
     private void validar(int numero, String cp, String provincia, String municipio) {
 
         if (numero <= 0) {

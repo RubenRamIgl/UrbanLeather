@@ -38,6 +38,13 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Carga un usuario por su username para autenticación en Spring Security.
+     *
+     * @param username nombre de usuario
+     * @return UserDetails con username, password y roles
+     * @throws UsernameNotFoundException si el usuario no existe
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -54,6 +61,14 @@ public class UsuarioService implements UserDetailsService {
                 .build();
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     *
+     * @param dto datos del usuario a registrar
+     * @return true si el registro fue exitoso
+     * @throws DuplicadoException si el username ya existe
+     * @throws PeticionIncorrectaException si las contraseñas no coinciden
+     */
     public boolean register(UsuarioRegisterDTO dto) {
 
         if (usuarioRepository.findByUsername(dto.getUsername()).isPresent()) {
@@ -86,6 +101,13 @@ public class UsuarioService implements UserDetailsService {
         return true;
     }
 
+    /**
+     * Actualiza los datos básicos de un usuario.
+     *
+     * @param dto datos a actualizar
+     * @return UsuarioUpdateDTO actualizado
+     * @throws NoEncontradoException si el usuario no existe
+     */
     public UsuarioUpdateDTO actualizarUsuario(UsuarioUpdateDTO dto) {
 
         Usuario usuario = usuarioRepository.findByUsername(dto.getUsername())
@@ -100,6 +122,13 @@ public class UsuarioService implements UserDetailsService {
         return dto;
     }
 
+    /**
+     * Elimina completamente un usuario y sus relaciones (dirección y compras).
+     *
+     * @param username usuario a eliminar
+     * @return true si se eliminó correctamente
+     * @throws NoEncontradoException si el usuario no existe
+     */
     public boolean borrarUsuario(String username) {
 
         Usuario usuario = usuarioRepository.findByUsername(username)
@@ -121,6 +150,14 @@ public class UsuarioService implements UserDetailsService {
         return true;
     }
 
+    /**
+     * Permite a un usuario autenticado eliminar su propia cuenta.
+     *
+     * @param authUser usuario autenticado
+     * @param username usuario objetivo
+     * @return true si la eliminación fue exitosa
+     * @throws RuntimeException si intenta borrar otra cuenta
+     */
     public boolean borrarMiCuenta(String authUser, String username) {
 
         if (!authUser.equals(username)) {
@@ -130,6 +167,14 @@ public class UsuarioService implements UserDetailsService {
         return borrarUsuario(username);
     }
 
+    /**
+     * Permite a un usuario autenticado actualizar su propio perfil.
+     *
+     * @param authUser usuario autenticado
+     * @param dto datos a actualizar
+     * @return UsuarioUpdateDTO actualizado
+     * @throws RuntimeException si intenta modificar otro usuario
+     */
     public UsuarioUpdateDTO actualizarMiPerfil(String authUser, UsuarioUpdateDTO dto) {
 
         if (!authUser.equals(dto.getUsername())) {
@@ -139,6 +184,13 @@ public class UsuarioService implements UserDetailsService {
         return actualizarUsuario(dto);
     }
 
+    /**
+     * Obtiene la información pública del perfil de un usuario.
+     *
+     * @param username nombre del usuario
+     * @return datos del perfil en formato DTO
+     * @throws NoEncontradoException si el usuario no existe
+     */
     public UsuarioPerfilDTO obtenerPerfil(String username) {
 
         Usuario u = usuarioRepository.findByUsername(username)

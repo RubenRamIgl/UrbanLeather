@@ -17,7 +17,13 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-
+    /**
+     * Crea una nueva categoría.
+     *
+     * @param nombre nombre de la categoría
+     * @return true si la categoría fue creada correctamente
+     * @throws PeticionIncorrectaException si el nombre es nulo o vacío
+     */
     public boolean crearCategoria(String nombre) {
 
         if (nombre == null || nombre.isEmpty()) {
@@ -31,7 +37,11 @@ public class CategoriaService {
         return true;
     }
 
-
+    /**
+     * Obtiene la lista de todas las categorías del sistema.
+     *
+     * @return lista de categorías en formato DTO
+     */
     public List<CategoriaDTO> listarCategorias() {
 
         return categoriaRepository.findAll()
@@ -43,7 +53,15 @@ public class CategoriaService {
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * Actualiza el nombre de una categoría existente.
+     *
+     * @param id identificador de la categoría
+     * @param nombre nuevo nombre
+     * @return true si la actualización fue correcta
+     * @throws PeticionIncorrectaException si el nombre es nulo o vacío
+     * @throws NoEncontradoException si la categoría no existe
+     */
     public boolean actualizarCategoria(Long id, String nombre) {
 
         if (nombre == null || nombre.isEmpty()) {
@@ -60,7 +78,13 @@ public class CategoriaService {
         return true;
     }
 
-
+    /**
+     * Elimina una categoría del sistema.
+     *
+     * @param id identificador de la categoría
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si la categoría no existe
+     */
     public boolean eliminarCategoria(Long id) {
 
         Categoria categoria = categoriaRepository.findById(id)

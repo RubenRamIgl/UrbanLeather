@@ -33,7 +33,14 @@ public class CompraService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-
+    /**
+     * Registra una compra en el sistema (modo administrador o sistema interno).
+     *
+     * @param dto datos de la compra
+     * @return true si la compra fue creada correctamente
+     * @throws PeticionIncorrectaException si el total o estado son inválidos
+     * @throws NoEncontradoException si el usuario no existe
+     */
     public boolean registerCompra(CompraRegisterDTO dto) {
 
         if (dto.getTotal() <= 0) {
@@ -65,7 +72,13 @@ public class CompraService {
         return true;
     }
 
-
+    /**
+     * Elimina una compra del sistema (modo administrador).
+     *
+     * @param id identificador de la compra
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si la compra no existe
+     */
     public boolean eliminarCompra(Long id) {
 
         Compra compra = compraRepository.findById(id)
@@ -75,7 +88,17 @@ public class CompraService {
         return true;
     }
 
-
+    /**
+     * Registra una compra del usuario autenticado.
+     *
+     * <p>La compra se crea automáticamente con estado PENDIENTE.</p>
+     *
+     * @param usernameActual usuario autenticado
+     * @param dto datos de la compra
+     * @return true si la compra fue creada correctamente
+     * @throws NoEncontradoException si el usuario no existe
+     * @throws PeticionIncorrectaException si los datos son inválidos
+     */
     public boolean registerMiCompra(String usernameActual, CompraRegisterDTO dto) {
 
         if (dto.getTotal() <= 0) {
@@ -98,7 +121,15 @@ public class CompraService {
         return true;
     }
 
-
+    /**
+     * Elimina una compra del usuario autenticado.
+     *
+     * @param usernameActual usuario autenticado
+     * @param idCompra identificador de la compra
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si la compra no existe
+     * @throws AccessDeniedException si el usuario no es propietario de la compra
+     */
     public boolean eliminarMiCompra(String usernameActual, Long idCompra) {
 
         Compra compra = compraRepository.findById(idCompra)
@@ -112,7 +143,12 @@ public class CompraService {
         return true;
     }
 
-
+    /**
+     * Obtiene todas las compras del usuario autenticado.
+     *
+     * @param usernameActual usuario autenticado
+     * @return lista de compras del usuario
+     */
     public List<Compra> verMisCompras(String usernameActual) {
 
         return compraRepository.findByUsuarioUsername(usernameActual);

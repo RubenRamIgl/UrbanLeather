@@ -30,7 +30,13 @@ public class CarritoService {
     @Autowired
     private TallaRepository tallaRepository;
 
-
+    /**
+     * Obtiene el carrito de un usuario o lo crea si no existe.
+     *
+     * @param username nombre del usuario
+     * @return carrito existente o recién creado
+     * @throws NoEncontradoException si el usuario no existe
+     */
     private Carrito obtenerOCrearCarrito(String username) {
 
         return carritoRepository.findByUsuarioUsername(username)
@@ -43,7 +49,19 @@ public class CarritoService {
                 });
     }
 
-
+    /**
+     * Añade un producto al carrito del usuario.
+     *
+     * <p>Si el producto ya existe en el carrito con la misma talla, incrementa la cantidad.</p>
+     *
+     * @param username nombre del usuario
+     * @param productoId identificador del producto
+     * @param tallaNombre nombre de la talla (String)
+     * @param cantidad cantidad a añadir
+     * @return true si el producto fue añadido correctamente
+     * @throws PeticionIncorrectaException si la cantidad o talla son inválidas
+     * @throws NoEncontradoException si el producto, talla o usuario no existen
+     */
     public boolean addProducto(String username, Long productoId, String tallaNombre, int cantidad) {
 
         if (cantidad <= 0) {
@@ -84,7 +102,13 @@ public class CarritoService {
         return true;
     }
 
-
+    /**
+     * Obtiene el carrito completo de un usuario.
+     *
+     * @param username nombre del usuario
+     * @return carrito en formato DTO con sus items
+     * @throws NoEncontradoException si el carrito no existe
+     */
     public CarritoDTO verCarrito(String username) {
 
         Carrito carrito = carritoRepository.findByUsuarioUsername(username)
@@ -104,7 +128,15 @@ public class CarritoService {
         return new CarritoDTO(username, items);
     }
 
-
+    /**
+     * Elimina un item del carrito de un usuario.
+     *
+     * @param username nombre del usuario autenticado
+     * @param itemId identificador del item del carrito
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si el item no existe
+     * @throws PeticionIncorrectaException si el item no pertenece al usuario
+     */
     public boolean eliminarItem(String username, Long itemId) {
 
         CarritoItem item = carritoItemRepository.findById(itemId)
@@ -119,7 +151,13 @@ public class CarritoService {
         return true;
     }
 
-
+    /**
+     * Vacía completamente el carrito del usuario.
+     *
+     * @param username nombre del usuario
+     * @return true si el carrito fue vaciado correctamente
+     * @throws NoEncontradoException si el carrito no existe
+     */
     public boolean vaciarCarrito(String username) {
 
         Carrito carrito = carritoRepository.findByUsuarioUsername(username)

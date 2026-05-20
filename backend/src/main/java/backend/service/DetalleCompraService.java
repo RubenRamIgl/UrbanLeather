@@ -25,7 +25,19 @@ public class DetalleCompraService {
     @Autowired
     private TallaRepository tallaRepository;
 
-
+    /**
+     * Añade un detalle de compra a una compra existente.
+     *
+     * <p>Reduce el stock de la talla correspondiente si hay disponibilidad.</p>
+     *
+     * @param compraId identificador de la compra
+     * @param productoId identificador del producto
+     * @param tallaNombre nombre de la talla seleccionada
+     * @param cantidad cantidad de productos a añadir
+     * @return true si el detalle fue creado correctamente
+     * @throws PeticionIncorrectaException si la cantidad es inválida o no hay stock suficiente
+     * @throws NoEncontradoException si la compra, producto o talla no existen
+     */
     public boolean addDetalleCompra(Long compraId, Long productoId, Talla.TallaNombre tallaNombre, int cantidad) {
 
         if (cantidad <= 0) {
@@ -62,7 +74,13 @@ public class DetalleCompraService {
         return true;
     }
 
-
+    /**
+     * Obtiene todos los detalles asociados a una compra.
+     *
+     * @param compraId identificador de la compra
+     * @return lista de detalles de compra
+     * @throws NoEncontradoException si la compra no existe
+     */
     public List<DetalleCompra> verDetallesPorCompra(Long compraId) {
 
         if (!compraRepository.existsById(compraId)) {
@@ -73,6 +91,12 @@ public class DetalleCompraService {
     }
 
 
+    /**
+     * Obtiene todos los detalles de compra realizados por un usuario.
+     *
+     * @param username nombre del usuario
+     * @return lista de detalles en formato DTO
+     */
     public List<DetalleCompraDTO> verDetallesPorUsuario(String username) {
 
         return detalleCompraRepository.findByCompra_Usuario_Username(username)
@@ -91,7 +115,15 @@ public class DetalleCompraService {
                 .toList();
     }
 
-
+    /**
+     * Elimina un detalle de compra y devuelve el stock a la talla correspondiente.
+     *
+     * <p>Al eliminar el detalle, se restaura automáticamente el stock de la talla.</p>
+     *
+     * @param id identificador del detalle de compra
+     * @return true si la eliminación fue correcta
+     * @throws NoEncontradoException si el detalle no existe
+     */
     public boolean eliminarDetalle(Long id) {
 
         DetalleCompra detalle = detalleCompraRepository.findById(id)
