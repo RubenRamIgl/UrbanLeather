@@ -85,3 +85,26 @@
     color: #000;
     text-decoration: none;
 }
+
+@media (max-width: 480px) {
+
+    .iniciarSesion {
+        font-size: 24px;
+    }
+
+    .volver {
+        left: 10px;
+        gap: 6px;
+        font-size: 14px;
+    }
+
+    .formulario {
+        margin-top: 20px;
+        gap: 15px;
+    }
+
+    .iniciar {
+        width: 90%;
+        max-width: 350px;
+    }
+}
