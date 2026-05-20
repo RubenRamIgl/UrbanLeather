@@ -60,6 +60,17 @@ function MenuDatosAdmin() {
   const [comprasUsuario, setComprasUsuario] = useState([]);
   const [showComprasUsuario, setShowComprasUsuario] = useState(false);
 
+  const resetVistas = () => {
+    setShowProducto(false);
+    setShowBuscarProducto(false);
+    setShowModificarProducto(false);
+    setShowBuscarUsuario(false);
+    setShowGestionStock(false);
+    setShowComprasUsuario(false);
+
+    setModoUsuario(null);
+  };
+
   // =========================
   // CHANGE PRODUCTO
   // =========================
@@ -203,7 +214,7 @@ function MenuDatosAdmin() {
   };
 
   // =========================
-  // 🔥 ABRIR MODIFICAR PRODUCTO
+  // ABRIR MODIFICAR PRODUCTO
   // =========================
   const handleOpenModificarProducto = () => {
 
@@ -259,7 +270,6 @@ function MenuDatosAdmin() {
 
         const token = localStorage.getItem("token");
 
-        // 🔥 SI ES ELIMINAR → no hace falta cargar usuario completo
         if (modoUsuario === "eliminar") {
 
           await api.delete(`/usuarioDelete/${searchUsername}`, {
@@ -423,43 +433,63 @@ function MenuDatosAdmin() {
       <div className="opciones">
 
         {/* USUARIOS */}
-        <p onClick={handleOpenBuscarUsuario}>Ver usuario</p>
-        <p onClick={handleEditarUsuario}>Modificar usuario</p>
-        <p onClick={handleOpenEliminarUsuario}>Eliminar usuario</p>
+        <p onClick={() => {
+          resetVistas();
+          handleOpenBuscarUsuario();
+        }}>
+          Ver usuario
+        </p>
+
+        <p onClick={() => {
+          resetVistas();
+          handleEditarUsuario();
+        }}>
+          Modificar usuario
+        </p>
+
+        <p onClick={() => {
+          resetVistas();
+          handleOpenEliminarUsuario();
+        }}>
+          Eliminar usuario
+        </p>
 
         {/* PRODUCTOS */}
-        <p onClick={handleOpenProducto}>Añadir producto</p>
-        <p onClick={handleOpenBuscarProducto}>Buscar producto</p>
+        <p onClick={() => {
+          resetVistas();
+          handleOpenProducto();
+        }}>
+          Añadir producto
+        </p>
 
-        <p onClick={handleOpenModificarProducto}>
+        <p onClick={() => {
+          resetVistas();
+          handleOpenBuscarProducto();
+        }}>
+          Buscar producto
+        </p>
+
+        <p onClick={() => {
+          resetVistas();
+          handleOpenModificarProducto();
+        }}>
           Modificar producto
         </p>
 
-
+        {/* STOCK */}
         <p onClick={() => {
+          resetVistas();
           setShowGestionStock(true);
-          setShowProducto(false);
-          setShowBuscarProducto(false);
-          setShowModificarProducto(false);
-          setShowBuscarUsuario(false);
         }}>
           Gestionar stock tallas
         </p>
 
         {/* COMPRAS */}
         <p onClick={() => {
-
+          resetVistas();
           setShowComprasUsuario(true);
-
-          setShowProducto(false);
-          setShowBuscarProducto(false);
-          setShowModificarProducto(false);
-          setShowGestionStock(false);
-          setShowBuscarUsuario(false);
-
           setComprasUsuario([]);
           setSearchUsername("");
-
         }}>
           Ver compras usuario
         </p>

@@ -50,11 +50,13 @@ function Header() {
 
       {/* IZQUIERDA */}
       <div className="flex items-center">
-        <img
-          src={logo}
-          alt="Logo"
-          className="h-14 object-contain"
-        />
+        <Link to="/" className="flex items-center">
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-14 object-contain cursor-pointer"
+          />
+        </Link>
       </div>
 
       {/* CENTRO */}
