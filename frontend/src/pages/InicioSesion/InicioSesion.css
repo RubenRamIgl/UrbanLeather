@@ -8,8 +8,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* necesario para posicionar volver */
-    margin-bottom: 30px; /* espacio abajo */
+    position: relative;
+    margin-bottom: 30px;
     padding-top: 20px;
 }
 
@@ -37,10 +37,10 @@
 .formulario {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* 🔥 más espacio entre elementos */
+    gap: 20px;
     align-items: center;
     justify-content: center;
-    margin-top: 40px; /* 🔥 separa del header */
+    margin-top: 40px;
 }
 
 /* Inputs */
@@ -49,7 +49,7 @@
     border-radius: 4px;
     width: 30%;
     height: 35px; /* un poco más alto */
-    padding: 5px 10px; /* 🔥 más cómodo */
+    padding: 5px 10px;
 }
 
 /* Botón iniciar */
