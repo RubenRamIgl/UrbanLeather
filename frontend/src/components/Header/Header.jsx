@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import logo from "../../assets/images/Logo.png";
 import user from "../../assets/images/user.svg";
@@ -15,6 +15,11 @@ function Header() {
   const navigate = useNavigate();
   const [showFilter, setShowFilter] = useState(false);
 
+  const token = localStorage.getItem("token");
+  const isLogged = !!token;
+
+  const role = localStorage.getItem("role");
+
   const isHome = location.pathname === "/";
   const isShop =
     location.pathname === "/hombre" ||
@@ -22,14 +27,17 @@ function Header() {
 
   const isUser = location.pathname === "/usuario";
 
-  const isLogged = localStorage.getItem("isLogged") === "true";
-  const role = localStorage.getItem("role");
-
   const handleUserClick = () => {
-    if (!isLogged) return navigate("/login");
+    if (!isLogged) {
+      navigate("/login");
+      return;
+    }
 
-    if (role === "ADMIN") navigate("/admin/menu");
-    else navigate("/usuario/menuDatos");
+    if (role === "ADMIN") {
+      navigate("/admin/menu");
+    } else {
+      navigate("/usuario/menuDatos");
+    }
   };
 
   const handleFilterChange = (e) => {
@@ -46,11 +54,11 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 items-center px-5 py-3 w-full max-w-full bg-white shadow-md box-border">
+    <header className="sticky top-0 z-50 grid grid-cols-3 items-center px-5 py-3 w-full bg-white shadow-md">
 
       {/* IZQUIERDA */}
       <div className="flex items-center">
-        <Link to="/" className="flex items-center">
+        <Link to="/">
           <img
             src={logo}
             alt="Logo"
@@ -67,24 +75,20 @@ function Header() {
 
             <button
               onClick={() => setShowFilter(!showFilter)}
-              className="flex items-center gap-2 text-sm cursor-pointer uppercase tracking-wide"
+              className="flex items-center gap-2 text-sm uppercase tracking-wide"
             >
               Filter
-              <img
-                src={filterIcon}
-                alt="filter"
-                className="h-4"
-              />
+              <img src={filterIcon} alt="filter" className="h-4" />
             </button>
 
             {showFilter && (
-              <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-xl p-2 shadow-lg z-50 w-fit">
+              <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-white border rounded-xl p-2 shadow-lg">
 
                 <input
                   type="text"
                   placeholder="Buscar productos..."
                   onChange={handleFilterChange}
-                  className="min-w-[260px] px-5 py-3 text-sm border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition"
+                  className="min-w-[260px] px-5 py-3 text-sm border rounded-lg outline-none"
                 />
 
               </div>
@@ -100,11 +104,7 @@ function Header() {
 
         {(isShop || isUser) && (
           <Link to="/">
-            <img
-              src={arrow}
-              alt="back"
-              className="h-5 cursor-pointer"
-            />
+            <img src={arrow} alt="back" className="h-5 cursor-pointer" />
           </Link>
         )}
 
@@ -124,17 +124,8 @@ function Header() {
 
         {isHome && (
           <>
-            <img
-              src={heart}
-              alt="heart"
-              className="h-5"
-            />
-
-            <img
-              src={menu}
-              alt="menu"
-              className="h-5"
-            />
+            <img src={heart} alt="heart" className="h-5" />
+            <img src={menu} alt="menu" className="h-5" />
           </>
         )}
 
