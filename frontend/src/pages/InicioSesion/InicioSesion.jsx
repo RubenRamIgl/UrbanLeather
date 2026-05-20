@@ -1,10 +1,13 @@
 import "./InicioSesion.css";
 import arrow from "../../assets/images/arrow-left-circle.svg";
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 import api from "../../api/axios";
 
 function InicioSesion() {
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -23,7 +26,8 @@ function InicioSesion() {
     e.preventDefault();
 
     try {
-      // 1. LOGIN → solo token
+
+      // LOGIN
       const response = await api.post("/login", formData);
 
       const token = response.data;
@@ -31,7 +35,7 @@ function InicioSesion() {
       localStorage.setItem("token", token);
       localStorage.setItem("isLogged", "true");
 
-      // 2. OBTENER PERFIL PARA SACAR ROL
+      // PERFIL
       const perfil = await api.get("/miPerfil", {
         headers: {
           Authorization: `Bearer ${token}`
@@ -42,24 +46,32 @@ function InicioSesion() {
 
       localStorage.setItem("role", role);
 
-      // 3. REDIRIGIR
+      // REDIRECCIÓN
       navigate("/");
 
     } catch (error) {
+
       console.log(error);
+
       alert("Usuario o contraseña incorrectos");
     }
   };
 
   return (
-    <form className="formulario" onSubmit={handleLogin}>
-      <div className="headerSesion">
-        <p className="iniciarSesion">Iniciar Sesión</p>
 
-        <a className="volver" href="/">
+    <form className="formulario" onSubmit={handleLogin}>
+
+      <div className="headerSesion">
+
+        <p className="iniciarSesion">
+          Iniciar Sesión
+        </p>
+
+        <Link className="volver" to="/">
           Volver
           <img src={arrow} alt="Volver" />
-        </a>
+        </Link>
+
       </div>
 
       <input
@@ -81,11 +93,15 @@ function InicioSesion() {
       </button>
 
       <p className="noRegistrado">
+
         ¿No estás registrado?{" "}
-        <a href="/registro" className="registrateLink">
+
+        <Link to="/registro" className="registrateLink">
           Regístrate
-        </a>
+        </Link>
+
       </p>
+
     </form>
   );
 }
