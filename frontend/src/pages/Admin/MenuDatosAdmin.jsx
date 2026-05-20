@@ -33,6 +33,7 @@ function MenuDatosAdmin() {
   const [showProducto, setShowProducto] = useState(false);
   const [imagenFile, setImagenFile] = useState(null);
 
+
   const [producto, setProducto] = useState({
     nombre: "",
     descripcion: "",
@@ -55,6 +56,9 @@ function MenuDatosAdmin() {
   const [searchStockProducto, setSearchStockProducto] = useState("");
   const [productoStock, setProductoStock] = useState(null);
   const [tallasStock, setTallasStock] = useState([]);
+
+  const [comprasUsuario, setComprasUsuario] = useState([]);
+  const [showComprasUsuario, setShowComprasUsuario] = useState(false);
 
   // =========================
   // CHANGE PRODUCTO
@@ -369,6 +373,36 @@ function MenuDatosAdmin() {
     setTallasStock(Array.isArray(res.data) ? res.data : []);
   };
 
+  const buscarComprasUsuario = async () => {
+    try {
+
+      if (!searchUsername.trim()) {
+        alert("Introduce un username");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      const res = await api.get(
+        `/admin/compras/${searchUsername}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      console.log(res.data);
+      console.log(Array.isArray(res.data));
+
+      const data = res.data;
+
+      setComprasUsuario(Array.isArray(data) ? data : []);
+
+    } catch (error) {
+      console.log(error);
+      alert("Error al buscar compras");
+    }
+  };
+
   // =========================
   // LOGOUT
   // =========================
@@ -401,6 +435,7 @@ function MenuDatosAdmin() {
           Modificar producto
         </p>
 
+
         <p onClick={() => {
           setShowGestionStock(true);
           setShowProducto(false);
@@ -409,6 +444,24 @@ function MenuDatosAdmin() {
           setShowBuscarUsuario(false);
         }}>
           Gestionar stock tallas
+        </p>
+
+        {/* COMPRAS */}
+        <p onClick={() => {
+
+          setShowComprasUsuario(true);
+
+          setShowProducto(false);
+          setShowBuscarProducto(false);
+          setShowModificarProducto(false);
+          setShowGestionStock(false);
+          setShowBuscarUsuario(false);
+
+          setComprasUsuario([]);
+          setSearchUsername("");
+
+        }}>
+          Ver compras usuario
         </p>
 
         <p className="logout" onClick={handleLogout}>
@@ -658,6 +711,55 @@ function MenuDatosAdmin() {
 
         </div>
       )}
+
+      {showComprasUsuario && (
+        <div className="formDireccion">
+
+          <input
+            type="text"
+            placeholder="Username usuario"
+            value={searchUsername}
+            onChange={(e) => setSearchUsername(e.target.value)}
+          />
+
+          <button onClick={buscarComprasUsuario}>
+            Buscar compras
+          </button>
+
+        </div>
+      )}
+
+       {showComprasUsuario && (
+         <div className="formDireccion">
+
+           <h3>Compras del usuario</h3>
+
+           {Array.isArray(comprasUsuario) && comprasUsuario.length > 0 ? (
+             comprasUsuario.map((c) => (
+               <div key={c.id} style={{ marginBottom: "15px" }}>
+                 <p>Producto: {c.nombreProducto}</p>
+                 <p>Cantidad: {c.cantidad}</p>
+                 <p>Precio unitario: {c.precioUnitario} €</p>
+
+                 <p>Talla: {c.talla?.nombre}</p>
+
+                 <hr />
+
+                 <p>Fecha: {c.compra?.fecha}</p>
+                 <p>Total compra: {c.compra?.total} €</p>
+                 <hr />
+               </div>
+             ))
+           ) : (
+             <p>No hay compras para este usuario</p>
+           )}
+
+         </div>
+       )}
+
+       {showComprasUsuario && comprasUsuario.length === 0 && (
+         <p>No hay compras para este usuario</p>
+       )}
 
     </div>
 

@@ -1,5 +1,6 @@
 package backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -13,6 +14,7 @@ public class DetalleCompra {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "compra_id", nullable = false)
+    @JsonIgnoreProperties({"detalles", "usuario"})
     private Compra compra;
 
     @ManyToOne(fetch = FetchType.LAZY)

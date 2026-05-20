@@ -1,5 +1,6 @@
 package backend.controller;
 
+import backend.DTO.DetalleCompraDTO;
 import backend.model.DetalleCompra;
 import backend.model.Talla;
 import backend.service.DetalleCompraService;
@@ -64,10 +65,19 @@ public class DetalleCompraController {
 
 
     @GetMapping("/detalleCompra/misDetalles")
-    public ResponseEntity<List<DetalleCompra>> verMisDetalles() {
+    public ResponseEntity<List<DetalleCompraDTO>> verMisDetalles() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return ResponseEntity.ok(detalleCompraService.verDetallesPorUsuario(username));
+    }
+
+    @GetMapping("/admin/compras/{username}")
+    public ResponseEntity<List<DetalleCompraDTO>> verComprasUsuario(
+            @PathVariable String username) {
+
+        return ResponseEntity.ok(
+                detalleCompraService.verDetallesPorUsuario(username)
+        );
     }
 }

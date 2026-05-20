@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.DTO.DetalleCompraDTO;
 import backend.model.*;
 import backend.repository.*;
 import backend.error.excepciones.NoEncontradoException;
@@ -72,9 +73,22 @@ public class DetalleCompraService {
     }
 
 
-    public List<DetalleCompra> verDetallesPorUsuario(String username) {
+    public List<DetalleCompraDTO> verDetallesPorUsuario(String username) {
 
-        return detalleCompraRepository.findByCompra_Usuario_Username(username);
+        return detalleCompraRepository.findByCompra_Usuario_Username(username)
+                .stream()
+                .map(d -> new DetalleCompraDTO(
+                        d.getId(),
+                        d.getNombreProducto(),
+                        d.getCantidad(),
+                        d.getPrecioUnitario().doubleValue(),
+                        d.getTalla().getNombre().name(),
+                        d.getCompra().getId(),
+                        d.getCompra().getEstado().name(),
+                        d.getCompra().getFecha(),
+                        d.getCompra().getTotal()
+                ))
+                .toList();
     }
 
 

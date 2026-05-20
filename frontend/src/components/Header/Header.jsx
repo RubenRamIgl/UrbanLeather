@@ -8,21 +8,17 @@ import bag from "../../assets/images/shopping-bag.svg";
 import heart from "../../assets/images/heart.svg";
 import menu from "../../assets/images/align-right.svg";
 import arrow from "../../assets/images/arrow-left.svg";
-
-import sortIcon from "../../assets/images/sort.svg";
 import filterIcon from "../../assets/images/settings.svg";
-
-import "./Header.css";
 
 function Header() {
   const location = useLocation();
   const navigate = useNavigate();
-
   const [showFilter, setShowFilter] = useState(false);
 
   const isHome = location.pathname === "/";
   const isShop =
-    location.pathname === "/hombre" || location.pathname === "/mujer";
+    location.pathname === "/hombre" ||
+    location.pathname === "/mujer";
 
   const isUser = location.pathname === "/usuario";
 
@@ -30,19 +26,12 @@ function Header() {
   const role = localStorage.getItem("role");
 
   const handleUserClick = () => {
-    if (!isLogged) {
-      navigate("/login");
-      return;
-    }
+    if (!isLogged) return navigate("/login");
 
-    if (role === "ADMIN") {
-      navigate("/admin/menu");
-    } else {
-      navigate("/usuario/menuDatos");
-    }
+    if (role === "ADMIN") navigate("/admin/menu");
+    else navigate("/usuario/menuDatos");
   };
 
-  // 🔥 FILTRO EN TIEMPO REAL (actualiza URL)
   const handleFilterChange = (e) => {
     const value = e.target.value;
 
@@ -57,47 +46,63 @@ function Header() {
   };
 
   return (
-    <header className="header">
+    <header className="sticky top-0 z-50 grid grid-cols-3 items-center px-5 py-3 w-full max-w-full bg-white shadow-md box-border">
 
-      <img src={logo} alt="Logo" />
+      {/* IZQUIERDA */}
+      <div className="flex items-center">
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-14 object-contain"
+        />
+      </div>
 
-      {isShop && (
-        <div className="central">
-
-          <a
-            className="filter"
-            onClick={() => setShowFilter(!showFilter)}
-            style={{ cursor: "pointer" }}
-          >
-            Filter
-            <img src={filterIcon} alt="filter" />
-          </a>
-
-          {showFilter && (
-            <div className="filter-box">
-              <input
-                type="text"
-                placeholder="Buscar productos..."
-                onChange={handleFilterChange}
-                className="filter-input"
-              />
-            </div>
-          )}
-
-        </div>
-      )}
-
-      <div className="icons">
+      {/* CENTRO */}
+      <div className="flex justify-center">
 
         {isShop && (
-          <Link to="/">
-            <img src={arrow} alt="back" />
-          </Link>
+          <div className="relative flex items-center gap-3">
+
+            <button
+              onClick={() => setShowFilter(!showFilter)}
+              className="flex items-center gap-2 text-sm cursor-pointer uppercase tracking-wide"
+            >
+              Filter
+              <img
+                src={filterIcon}
+                alt="filter"
+                className="h-4"
+              />
+            </button>
+
+            {showFilter && (
+              <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-xl p-2 shadow-lg z-50 w-fit">
+
+                <input
+                  type="text"
+                  placeholder="Buscar productos..."
+                  onChange={handleFilterChange}
+                  className="min-w-[260px] px-5 py-3 text-sm border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition"
+                />
+
+              </div>
+            )}
+
+          </div>
         )}
 
-        {isUser && (
+      </div>
+
+      {/* DERECHA */}
+      <div className="flex items-center justify-end gap-5">
+
+        {(isShop || isUser) && (
           <Link to="/">
-            <img src={arrow} alt="back" />
+            <img
+              src={arrow}
+              alt="back"
+              className="h-5 cursor-pointer"
+            />
           </Link>
         )}
 
@@ -105,24 +110,34 @@ function Header() {
           src={isLogged ? userCheck : user}
           alt="user"
           onClick={handleUserClick}
-          style={{ cursor: "pointer" }}
+          className="h-5 cursor-pointer"
         />
 
         <img
           src={bag}
           alt="bag"
-          style={{ cursor: "pointer" }}
           onClick={() => navigate("/carrito")}
+          className="h-5 cursor-pointer"
         />
 
         {isHome && (
           <>
-            <img src={heart} alt="heart" />
-            <img src={menu} alt="menu" />
+            <img
+              src={heart}
+              alt="heart"
+              className="h-5"
+            />
+
+            <img
+              src={menu}
+              alt="menu"
+              className="h-5"
+            />
           </>
         )}
 
       </div>
+
     </header>
   );
 }

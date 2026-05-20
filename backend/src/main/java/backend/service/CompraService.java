@@ -3,24 +3,32 @@ package backend.service;
 import backend.DTO.CompraRegisterDTO;
 import backend.error.excepciones.NoEncontradoException;
 import backend.error.excepciones.PeticionIncorrectaException;
-import backend.model.Compra;
-import backend.model.Usuario;
+import backend.model.*;
 import backend.model.Compra.EstadoCompra;
-import backend.repository.CompraRepository;
-import backend.repository.UsuarioRepository;
+import backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CompraService {
 
     @Autowired
+    private CarritoRepository carritoRepository;
+
+    @Autowired
+    private CarritoItemRepository carritoItemRepository;
+
+    @Autowired
     private CompraRepository compraRepository;
+
+    @Autowired
+    private DetalleCompraRepository detalleCompraRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -108,5 +116,55 @@ public class CompraService {
     public List<Compra> verMisCompras(String usernameActual) {
 
         return compraRepository.findByUsuarioUsername(usernameActual);
+    }
+
+    public void checkout(String username) {
+
+        Carrito carrito = carritoRepository.findByUsuarioUsername(username)
+                .orElseThrow(() -> new NoEncontradoException("Carrito no encontrado"));
+
+        List<CarritoItem> items =
+                carritoItemRepository.findByCarritoId(carrito.getId());
+
+        if (items.isEmpty()) {
+            throw new PeticionIncorrectaException("El carrito está vacío");
+        }
+
+        Compra compra = new Compra();
+        compra.setUsuario(carrito.getUsuario());
+        compra.setFecha(LocalDateTime.now());
+        compra.setEstado(Compra.EstadoCompra.PAGADO);
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        List<DetalleCompra> detalles = new ArrayList<>();
+
+        for (CarritoItem item : items) {
+
+            BigDecimal precio = item.getProducto().getPrecio();
+
+            BigDecimal subtotal =
+                    precio.multiply(BigDecimal.valueOf(item.getCantidad()));
+
+            total = total.add(subtotal);
+
+            DetalleCompra detalle = new DetalleCompra(
+                    compra,
+                    item.getProducto(),
+                    item.getTalla(),
+                    item.getCantidad(),
+                    precio,
+                    item.getProducto().getNombre()
+            );
+
+            detalles.add(detalle);
+        }
+
+        compra.setTotal(total);
+        compra.setDetalles(detalles);
+
+        compraRepository.save(compra);
+
+        carritoItemRepository.deleteAll(items);
     }
 }

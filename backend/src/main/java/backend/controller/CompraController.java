@@ -67,4 +67,21 @@ public class CompraController {
 
         return ResponseEntity.ok(compraService.verMisCompras(usernameActual));
     }
+
+    @PostMapping("/compra/checkout")
+    public ResponseEntity<String> checkout() {
+
+        String username =
+                SecurityContextHolder.getContext().getAuthentication().getName();
+
+        compraService.checkout(username);
+
+        return ResponseEntity.ok("Compra realizada correctamente");
+    }
+
+    /*@GetMapping("/admin/compras/{username}")
+    public ResponseEntity<List<Compra>> verComprasUsuario(@PathVariable String username) {
+
+        return ResponseEntity.ok(compraService.verMisCompras(username));
+    }*/
 }
