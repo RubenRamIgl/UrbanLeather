@@ -83,7 +83,7 @@ function InicioSesion() {
       <p className="noRegistrado">
         ¿No estás registrado?{" "}
         <a href="/registro" className="registrateLink">
-          Regístrate
+          Registrate
         </a>
       </p>
     </form>
