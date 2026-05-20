@@ -37,8 +37,8 @@ public class FileController {
                 return ResponseEntity.badRequest().body("Archivo vacío");
             }
 
-            System.out.println("📄 Nombre original: " + file.getOriginalFilename());
-            System.out.println("📦 Tamaño: " + file.getSize());
+            System.out.println("Nombre original: " + file.getOriginalFilename());
+            System.out.println("Tamaño: " + file.getSize());
 
             // crear carpeta si no existe
             Files.createDirectories(UPLOAD_DIR);
@@ -52,7 +52,7 @@ public class FileController {
 
             System.out.println("Imagen guardada correctamente");
 
-            //String url = "http://localhost:8081/files/" + fileName;
+            // String url = "http://localhost:8081/files/" + fileName;
             String url = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
                     .path("/files/")
