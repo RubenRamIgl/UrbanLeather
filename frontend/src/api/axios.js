@@ -1,8 +1,8 @@
-import axios from "axios";
+/*import axios from "axios";
 
-/*const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:8081",
-});*/
+});
 
 const api = axios.create({
   baseURL: "https://urbanleather-production.up.railway.app",
@@ -40,6 +40,45 @@ api.interceptors.response.use(
 
       // redirigir login
       window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default api;*/
+
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://urbanleather-production.up.railway.app",
+});
+
+// =========================
+// INTERCEPTOR REQUEST JWT
+// =========================
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token && token !== "null" && token !== "undefined") {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+// =========================
+// INTERCEPTOR RESPONSE
+// =========================
+api.interceptors.response.use(
+  (response) => response,
+
+  (error) => {
+    if (error.response?.status === 401) {
+      // limpiar sesión
+      localStorage.removeItem("token");
+      localStorage.removeItem("isLogged");
+      localStorage.removeItem("role");
     }
 
     return Promise.reject(error);
