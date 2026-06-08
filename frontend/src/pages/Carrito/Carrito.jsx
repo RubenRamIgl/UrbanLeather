@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 function Carrito() {
   const [carrito, setCarrito] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = cargando
+  const navigate = useNavigate();
 
   const fetchCarrito = async () => {
     try {
@@ -57,12 +59,12 @@ function Carrito() {
   if (isAuthenticated === false) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
-        <h2 className="text-2xl font-bold mb-4">Acceso restringido</h2>
+        <h2 className="text-2xl font-bold mb-4">Acceso para clientes</h2>
         <p className="text-gray-600">
           Debes estar registrado o iniciar sesión para ver tu carrito.
         </p>
         <button
-          onClick={() => window.location.href = "/login"}
+          onClick={() => navigate("/login")}
           className="mt-4 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition"
         >
           Iniciar sesión
