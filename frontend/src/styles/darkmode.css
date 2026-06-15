@@ -1,39 +1,42 @@
 /* ============================================ */
+/* MODO OSCURO - TONOS SUAVES                  */
+/* ============================================ */
+
+body.dark-mode {
+    background-color: #121212;
+}
+
+/* ============================================ */
 /* HEADER en modo oscuro                        */
 /* ============================================ */
 
-/* Fondo y sombra del header */
 body.dark-mode .header {
-    background-color: #1a1a1a;
+    background-color: #1e1e1e;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Logo - no necesita cambios normalmente, pero si quieres invertirlo: */
 body.dark-mode .header-logo {
     filter: brightness(0.9);
 }
 
-/* Botón de filtro */
 body.dark-mode .header-filtro-boton {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .header-filtro-icono {
     filter: brightness(0) invert(1);
 }
 
-/* Dropdown del filtro */
 body.dark-mode .header-filtro-dropdown {
-    background-color: #2d2d2d;
-    border-color: #404040;
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Input del filtro */
 body.dark-mode .header-filtro-input {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #404040;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
 }
 
 body.dark-mode .header-filtro-input::placeholder {
@@ -41,10 +44,9 @@ body.dark-mode .header-filtro-input::placeholder {
 }
 
 body.dark-mode .header-filtro-input:focus {
-    border-color: #ffffff;
+    border-color: #e0e0e0;
 }
 
-/* Iconos de la derecha */
 body.dark-mode .header-icono {
     filter: brightness(0) invert(1);
 }
@@ -54,13 +56,12 @@ body.dark-mode .header-icono:hover {
     transform: scale(1.05);
 }
 
-/* Botón de tema - ya lo tienes en tu Header.css, pero asegúrate: */
 body.dark-mode .theme-toggle svg {
-    stroke: #ffffff;
+    stroke: #e0e0e0;
 }
 
 body.dark-mode .theme-toggle:hover {
-    background-color: #3a3a3a;
+    background-color: #333333;
 }
 
 /* ============================================ */
@@ -68,16 +69,16 @@ body.dark-mode .theme-toggle:hover {
 /* ============================================ */
 
 body.dark-mode .footer {
-    background-color: #1a1a1a;
+    background-color: #1e1e1e;
     box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.3);
 }
 
 body.dark-mode .footer-columna p {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .footer-columna p:hover {
-    color: #aaaaaa;
+    color: #bbbbbb;
 }
 
 body.dark-mode .icono-red-social {
@@ -94,20 +95,18 @@ body.dark-mode .icono-red-social:hover {
 /* HOME en modo oscuro                          */
 /* ============================================ */
 
-/* Links de géneros (Hombre/Mujer) */
 body.dark-mode .generos a {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .generos a:visited,
 body.dark-mode .generos a:active,
 body.dark-mode .generos a:hover {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Texto de géneros */
 body.dark-mode .generos p {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .rectangle img {
@@ -118,126 +117,91 @@ body.dark-mode .rectangle img {
 /* INICIO SESIÓN en modo oscuro                 */
 /* ============================================ */
 
-/* Título */
 body.dark-mode .iniciarSesion {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Botón volver */
 body.dark-mode .volver {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Inputs del formulario */
 body.dark-mode .formulario input {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #ffffff;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
 }
 
 body.dark-mode .formulario input::placeholder {
     color: #888888;
 }
 
-/* Texto inferior "¿No estás registrado?" */
 body.dark-mode .noRegistrado {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Link de registro */
 body.dark-mode .registrateLink {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .registrateLink:hover {
-    color: #cccccc;
+    color: #bbbbbb;
 }
 
 /* ============================================ */
 /* REGISTRO en modo oscuro                      */
 /* ============================================ */
 
-/* Título "Regístrate" */
 body.dark-mode .registrate {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Botón volver */
-body.dark-mode .volver {
-    color: #ffffff;
-}
-
-/* Inputs del formulario de registro */
-body.dark-mode .formulario input {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #ffffff;
-}
-
-body.dark-mode .formulario input::placeholder {
-    color: #888888;
-}
-
-/* Botón aceptar */
 body.dark-mode .aceptar {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #e0e0e0;
+    color: #121212;
 }
 
 body.dark-mode .aceptar:hover {
-    background-color: #e0e0e0;
+    background-color: #cccccc;
 }
 
 /* ============================================ */
 /* SECCIÓN PRODUCTOS en modo oscuro             */
 /* ============================================ */
 
-/* Header (si no está cubierto por el Header.css) */
-body.dark-mode .header {
-    background-color: #1a1a1a;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Iconos */
 body.dark-mode .icons img {
     filter: brightness(0) invert(1);
 }
 
-/* Links de ordenar y filtrar */
 body.dark-mode .sort,
 body.dark-mode .filter {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Título */
 body.dark-mode .titulo p {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
-/* Tarjetas de productos */
 body.dark-mode .chaqueta-name {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .chaqueta-price {
-    color: #ffffff;
+    color: #e0e0e0;
 }
 
 body.dark-mode .chaqueta-heart {
     filter: brightness(0) invert(1);
 }
 
-/* Caja del filtro */
 body.dark-mode .filter-box {
-    background-color: #2d2d2d;
+    background-color: #2a2a2a;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Input del filtro */
 body.dark-mode .filter-input {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #404040;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
 }
 
 body.dark-mode .filter-input::placeholder {
@@ -245,425 +209,319 @@ body.dark-mode .filter-input::placeholder {
 }
 
 body.dark-mode .filter-input:focus {
-    border-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    border-color: #e0e0e0;
+    box-shadow: 0 0 0 2px rgba(224, 224, 224, 0.1);
 }
 
 /* ============================================ */
-/* SECCIÓN MUJER en modo oscuro                 */
+/* USUARIO en modo oscuro                       */
 /* ============================================ */
 
-/* Header (si no está cubierto por Header.css) */
-body.dark-mode .header {
-    background-color: #1a1a1a;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Links de ordenar y filtrar */
-body.dark-mode .sort,
-body.dark-mode .filter {
-    color: #ffffff;
-}
-
-/* Iconos */
-body.dark-mode .icons img {
-    filter: brightness(0) invert(1);
-}
-
-/* Título */
-body.dark-mode .titulo p {
-    color: #ffffff;
-}
-
-/* Tarjetas de productos */
-body.dark-mode .chaqueta-name {
-    color: #ffffff;
-}
-
-body.dark-mode .chaqueta-price {
-    color: #ffffff;
-}
-
-body.dark-mode .chaqueta-heart {
-    filter: brightness(0) invert(1);
-}
-
-/* Caja del filtro */
-body.dark-mode .filter-box {
-    background-color: #2d2d2d;
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-/* Input del filtro */
-body.dark-mode .filter-input {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #404040;
-}
-
-body.dark-mode .filter-input::placeholder {
-    color: #888888;
-}
-
-body.dark-mode .filter-input:focus {
-    border-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-}
-
-/* ============================================ */
-/* USUARIO (MenuDatosUsuario) en modo oscuro   */
-/* ============================================ */
-
-/* Contenedor principal */
 body.dark-mode .usuarioPage {
-    background-color: #1a1a1a;
+    background-color: #121212;
 }
 
-/* Texto de las opciones */
 body.dark-mode .opciones p {
-    background-color: #2d2d2d;
-    border-color: #404040;
-    color: #ffffff;
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #e0e0e0;
 }
 
 body.dark-mode .opciones p:hover {
-    background-color: #3a3a3a;
+    background-color: #333333;
     transform: scale(1.03);
 }
 
-/* Botón cerrar sesión */
 body.dark-mode .cerrarSesion {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #e0e0e0;
+    color: #121212;
 }
 
 body.dark-mode .cerrarSesion:hover {
-    background-color: #e0e0e0;
+    background-color: #cccccc;
 }
 
-/* Avatar */
 body.dark-mode .usuarioAvatar {
     filter: brightness(0.9);
 }
 
-/* ============================================ */
-/* PRODUCTO DETALLE en modo oscuro              */
-/* ============================================ */
-
-/* Contenedor principal */
-body.dark-mode .producto-container {
-    background-color: #1a1a1a;
-}
-
-/* Imagen del producto */
-body.dark-mode .producto-img {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-/* Información del producto */
-body.dark-mode .producto-info h2 {
-    color: #ffffff;
-}
-
-body.dark-mode .producto-info p {
-    color: #cccccc;
-}
-
-body.dark-mode .producto-info .precio {
-    color: #ffffff;
-}
-
-/* Botón de añadir al carrito */
-body.dark-mode .producto-info button {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode .producto-info button:hover {
-    background-color: #e0e0e0;
-}
-
-/* Botones de tallas */
-body.dark-mode .tallas button {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #ffffff;
-}
-
-body.dark-mode .tallas button.active {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode .tallas button.disabled {
-    background-color: #404040;
-    color: #888888;
-    border-color: #555;
-}
-
-/* ============================================ */
-/* CARRITO en modo oscuro                       */
-/* ============================================ */
-
-/* Contenedor principal */
-body.dark-mode .carrito-container {
-    background-color: #1a1a1a;
-}
-
-/* Acceso para clientes */
-body.dark-mode .carrito-titulo {
-    color: #ffffff;
-}
-
-body.dark-mode .carrito-mensaje {
-    color: #aaaaaa;
-}
-
-body.dark-mode .btn-iniciar-sesion {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode .btn-iniciar-sesion:hover {
-    background-color: #e0e0e0;
-}
-
-/* Estado de carga */
-body.dark-mode .spinner {
-    border-color: #404040;
-    border-top-color: #ffffff;
-}
-
-body.dark-mode .cargando-texto {
-    color: #aaaaaa;
-}
-
-/* Título principal */
-body.dark-mode .carrito-titulo-principal {
-    color: #ffffff;
-}
-
-/* Carrito vacío */
-body.dark-mode .vacio-texto {
-    color: #aaaaaa;
-}
-
-body.dark-mode .btn-ver-productos {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode .btn-ver-productos:hover {
-    background-color: #e0e0e0;
-}
-
-/* Cada item del carrito */
-body.dark-mode .carrito-item {
-    border-color: #404040;
-    background-color: #2d2d2d;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-body.dark-mode .carrito-item:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Información del item */
-body.dark-mode .item-nombre {
-    color: #ffffff;
-}
-
-body.dark-mode .item-detalles {
-    color: #aaaaaa;
-}
-
-body.dark-mode .item-precio {
-    color: #ffffff;
-}
-
-body.dark-mode .item-subtotal {
-    color: #cccccc;
-}
-
-/* Botón eliminar */
-body.dark-mode .btn-eliminar {
-    color: #ffffff;
-}
-
-body.dark-mode .btn-eliminar:hover {
-    color: #ef4444;
-}
-
-/* Total del carrito */
-body.dark-mode .carrito-total {
-    border-top-color: #404040;
-}
-
-body.dark-mode .total-contenido {
-    color: #ffffff;
-}
-
-/* Botón vaciar carrito */
-body.dark-mode .btn-vaciar {
-    background-color: #404040;
-    color: #ffffff;
-}
-
-body.dark-mode .btn-vaciar:hover {
-    background-color: #4a4a4a;
-}
-
-/* Botón comprar */
-body.dark-mode .btn-comprar {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode .btn-comprar:hover:not(.disabled) {
-    background-color: #e0e0e0;
-}
-
-/* Spinner blanco */
-body.dark-mode .spinner-blanco {
-    border-top-color: #000000;
-}
-
-/* ============================================ */
-/* ADMIN en modo oscuro                         */
-/* ============================================ */
-
-/* Contenedor principal */
-body.dark-mode .adminPage {
-    background-color: #1a1a1a;
-}
-
-/* Texto de las opciones */
-body.dark-mode .opciones p {
-    color: #ffffff;
-}
-
-body.dark-mode .opciones p:hover {
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-/* Avatar */
-body.dark-mode .adminAvatar {
-    filter: brightness(0.9);
-}
-
-/* Inputs de formularios admin */
+/* Formularios usuario */
 body.dark-mode .formDireccion input {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #404040;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
 }
 
 body.dark-mode .formDireccion input::placeholder {
     color: #888888;
 }
 
-/* Botones de formularios admin */
-body.dark-mode .formDireccion button {
-    background-color: #ffffff;
-    color: #000000;
+body.dark-mode .formDireccion input:focus {
+    border-color: #e0e0e0;
 }
 
-body.dark-mode .formDireccion button:hover {
-    background-color: #e0e0e0;
+/* Compras usuario */
+body.dark-mode .compras-titulo {
+    color: #e0e0e0;
 }
 
-/* Botón cerrar sesión */
-body.dark-mode .cerrarSesion {
-    background-color: #ffffff;
-    color: #000000;
+body.dark-mode .compra-card {
+    border-color: #3a3a3a;
+    background-color: #2a2a2a;
 }
 
-body.dark-mode .cerrarSesion:hover {
-    background-color: #e0e0e0;
+body.dark-mode .compra-header {
+    border-bottom-color: #e0e0e0;
 }
 
-/* Header de admin */
-body.dark-mode .headerAdmin {
-    background-color: #1a1a1a;
+body.dark-mode .compra-header p {
+    color: #e0e0e0;
 }
 
-/* Botón volver admin */
-body.dark-mode .volverAdmin {
-    color: #ffffff;
+body.dark-mode .estado-pagado {
+    color: #4ade80;
+}
+
+body.dark-mode .estado-pendiente {
+    color: #fbbf24;
+}
+
+body.dark-mode .productos-subtitulo {
+    color: #e0e0e0;
+}
+
+body.dark-mode .producto-item {
+    border-left-color: #666;
+}
+
+body.dark-mode .producto-nombre {
+    color: #e0e0e0;
+}
+
+body.dark-mode .producto-detalles {
+    color: #bbbbbb;
+}
+
+body.dark-mode .separador {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .compras-resumen {
+    background-color: #1a3a2a;
+}
+
+body.dark-mode .compras-resumen p {
+    color: #e0e0e0;
+}
+
+body.dark-mode .no-compras {
+    color: #bbbbbb;
 }
 
 /* ============================================ */
-/* ESTILOS GENERALES QUE PUEDEN FALTAR         */
+/* PRODUCTO DETALLE en modo oscuro              */
 /* ============================================ */
 
-/* Fondo general del body */
-body.dark-mode {
-    background-color: #1a1a1a;
+body.dark-mode .producto-container {
+    background-color: #121212;
 }
 
-/* Texto general en todas las páginas */
-body.dark-mode p:not(.item-detalles):not(.producto-detalles),
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode label,
-body.dark-mode span {
-    color: #ffffff;
+body.dark-mode .producto-img {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Enlaces generales */
-body.dark-mode a {
-    color: #ffffff;
+body.dark-mode .producto-info h2 {
+    color: #e0e0e0;
 }
 
-body.dark-mode a:hover {
+body.dark-mode .producto-info p {
+    color: #bbbbbb;
+}
+
+body.dark-mode .producto-info .precio {
+    color: #e0e0e0;
+}
+
+body.dark-mode .producto-info button {
+    background-color: #e0e0e0;
+    color: #121212;
+}
+
+body.dark-mode .producto-info button:hover {
+    background-color: #cccccc;
+}
+
+body.dark-mode .tallas button {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
+}
+
+body.dark-mode .tallas button.active {
+    background-color: #e0e0e0;
+    color: #121212;
+}
+
+body.dark-mode .tallas button.disabled {
+    background-color: #3a3a3a;
+    color: #888888;
+    border-color: #4a4a4a;
+}
+
+/* ============================================ */
+/* CARRITO en modo oscuro                       */
+/* ============================================ */
+
+body.dark-mode .carrito-container {
+    background-color: #121212;
+}
+
+body.dark-mode .carrito-titulo {
+    color: #e0e0e0;
+}
+
+body.dark-mode .carrito-mensaje {
+    color: #bbbbbb;
+}
+
+body.dark-mode .btn-iniciar-sesion {
+    background-color: #e0e0e0;
+    color: #121212;
+}
+
+body.dark-mode .btn-iniciar-sesion:hover {
+    background-color: #cccccc;
+}
+
+body.dark-mode .spinner {
+    border-color: #3a3a3a;
+    border-top-color: #e0e0e0;
+}
+
+body.dark-mode .cargando-texto {
+    color: #bbbbbb;
+}
+
+body.dark-mode .carrito-titulo-principal {
+    color: #e0e0e0;
+}
+
+body.dark-mode .vacio-texto {
+    color: #bbbbbb;
+}
+
+body.dark-mode .btn-ver-productos {
+    background-color: #e0e0e0;
+    color: #121212;
+}
+
+body.dark-mode .btn-ver-productos:hover {
+    background-color: #cccccc;
+}
+
+body.dark-mode .carrito-item {
+    border-color: #3a3a3a;
+    background-color: #2a2a2a;
+}
+
+body.dark-mode .item-nombre {
+    color: #e0e0e0;
+}
+
+body.dark-mode .item-detalles {
+    color: #bbbbbb;
+}
+
+body.dark-mode .item-precio {
+    color: #e0e0e0;
+}
+
+body.dark-mode .item-subtotal {
     color: #cccccc;
 }
 
-/* ============================================ */
-/* FORMULARIOS Y INPUTS GENERALES              */
-/* ============================================ */
-
-/* Todos los inputs que falten */
-body.dark-mode input:not(.header-filtro-input):not(.filter-input):not(.formDireccion input) {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-color: #404040;
+body.dark-mode .btn-eliminar {
+    color: #e0e0e0;
 }
 
-body.dark-mode input::placeholder {
+body.dark-mode .btn-eliminar:hover {
+    color: #ef4444;
+}
+
+body.dark-mode .carrito-total {
+    border-top-color: #3a3a3a;
+}
+
+body.dark-mode .total-contenido {
+    color: #e0e0e0;
+}
+
+body.dark-mode .btn-vaciar {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .btn-vaciar:hover {
+    background-color: #4a4a4a;
+}
+
+body.dark-mode .btn-comprar {
+    background-color: #e0e0e0;
+    color: #121212;
+}
+
+body.dark-mode .btn-comprar:hover:not(.disabled) {
+    background-color: #cccccc;
+}
+
+body.dark-mode .spinner-blanco {
+    border-top-color: #121212;
+}
+
+/* ============================================ */
+/* ADMIN en modo oscuro                         */
+/* ============================================ */
+
+body.dark-mode .adminPage {
+    background-color: #121212;
+}
+
+body.dark-mode .opciones p {
+    color: #e0e0e0;
+}
+
+body.dark-mode .opciones p:hover {
+    color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+body.dark-mode .adminAvatar {
+    filter: brightness(0.9);
+}
+
+body.dark-mode .formDireccion input {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
+}
+
+body.dark-mode .formDireccion input::placeholder {
     color: #888888;
 }
 
-/* Todos los botones que falten */
-body.dark-mode button:not(.theme-toggle):not(.btn-eliminar):not(.btn-vaciar):not(.btn-comprar):not(.btn-iniciar-sesion):not(.btn-ver-productos):not(.aceptar):not(.cerrarSesion):not(.producto-info button):not(.tallas button) {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode button:hover:not(.theme-toggle) {
+body.dark-mode .formDireccion button {
     background-color: #e0e0e0;
+    color: #121212;
 }
 
-/* ============================================ */
-/* CONTENEDORES GENERALES                       */
-/* ============================================ */
-
-body.dark-mode .container,
-body.dark-mode .main-content,
-body.dark-mode section:not(.header):not(.footer) {
-    background-color: #1a1a1a;
+body.dark-mode .formDireccion button:hover {
+    background-color: #cccccc;
 }
 
-/* ============================================ */
-/* TARJETAS Y CARD GENERALES                    */
-/* ============================================ */
+body.dark-mode .headerAdmin {
+    background-color: #1e1e1e;
+}
 
-body.dark-mode .card,
-body.dark-mode .producto-card,
-body.dark-mode .item-card {
-    background-color: #2d2d2d;
-    border-color: #404040;
+body.dark-mode .volverAdmin {
+    color: #e0e0e0;
 }
