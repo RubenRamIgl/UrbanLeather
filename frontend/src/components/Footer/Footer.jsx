@@ -4,47 +4,35 @@ import facebook from "../../assets/images/facebook.svg";
 import youtube from "../../assets/images/youtube.svg";
 import pinterest from "../../assets/images/pinterest.svg";
 import tiktok from "../../assets/images/tiktok.svg";
+import "./Footer.css"; // Importamos el CSS (si ya tienes uno, usa ese)
 
 function Footer() {
   return (
-    <footer
-      className="
-        flex flex-col sm:flex-row
-        justify-between
-        items-center sm:items-start
-        text-center sm:text-left
-        gap-6 sm:gap-0
-        p-5
-        w-full
-        box-border
-        shadow-[0px_-4px_6px_rgba(0,0,0,0.1)]
-        mt-7
-      "
-    >
+    <footer className="footer">
       {/* COLUMNAS */}
-      <div className="flex flex-col gap-2.5">
+      <div className="footer-columna">
         <p>Sobre nosotros</p>
         <p>Contactos</p>
       </div>
 
-      <div className="flex flex-col gap-2.5">
+      <div className="footer-columna">
         <p>Preguntas frecuentes</p>
         <p>Política de envíos</p>
       </div>
 
-      <div className="flex flex-col gap-2.5">
+      <div className="footer-columna">
         <p>Información legal</p>
         <p>Suscripciones</p>
       </div>
 
       {/* ICONOS */}
-      <div className="flex items-center justify-center gap-3.5 flex-wrap">
-        <img src={instagram} alt="instagram" className="h-5" />
-        <img src={twitter} alt="twitter" className="h-5" />
-        <img src={facebook} alt="facebook" className="h-5" />
-        <img src={youtube} alt="youtube" className="h-5" />
-        <img src={pinterest} alt="pinterest" className="h-5" />
-        <img src={tiktok} alt="tiktok" className="h-5" />
+      <div className="footer-iconos">
+        <img src={instagram} alt="instagram" className="icono-red-social" />
+        <img src={twitter} alt="twitter" className="icono-red-social" />
+        <img src={facebook} alt="facebook" className="icono-red-social" />
+        <img src={youtube} alt="youtube" className="icono-red-social" />
+        <img src={pinterest} alt="pinterest" className="icono-red-social" />
+        <img src={tiktok} alt="tiktok" className="icono-red-social" />
       </div>
     </footer>
   );

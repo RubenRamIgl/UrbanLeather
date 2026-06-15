@@ -9,6 +9,7 @@ import heart from "../../assets/images/heart.svg";
 import menu from "../../assets/images/align-right.svg";
 import arrow from "../../assets/images/arrow-left.svg";
 import filterIcon from "../../assets/images/settings.svg";
+import "./Header.css"; // Importamos el CSS
 
 function Header() {
   const location = useLocation();
@@ -54,41 +55,41 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 items-center px-5 py-3 w-full bg-white shadow-md">
+    <header className="header">
 
       {/* IZQUIERDA */}
-      <div className="flex items-center">
+      <div className="header-izquierda">
         <Link to="/">
           <img
             src={logo}
             alt="Logo"
-            className="h-14 object-contain cursor-pointer"
+            className="header-logo"
           />
         </Link>
       </div>
 
       {/* CENTRO */}
-      <div className="flex justify-center">
+      <div className="header-centro">
 
         {isShop && (
-          <div className="relative flex items-center gap-3">
+          <div className="header-filtro-container">
 
             <button
               onClick={() => setShowFilter(!showFilter)}
-              className="flex items-center gap-2 text-sm uppercase tracking-wide"
+              className="header-filtro-boton"
             >
               Filter
-              <img src={filterIcon} alt="filter" className="h-4" />
+              <img src={filterIcon} alt="filter" className="header-filtro-icono" />
             </button>
 
             {showFilter && (
-              <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-white border rounded-xl p-2 shadow-lg">
+              <div className="header-filtro-dropdown">
 
                 <input
                   type="text"
                   placeholder="Buscar productos..."
                   onChange={handleFilterChange}
-                  className="min-w-[260px] px-5 py-3 text-sm border rounded-lg outline-none"
+                  className="header-filtro-input"
                 />
 
               </div>
@@ -100,11 +101,11 @@ function Header() {
       </div>
 
       {/* DERECHA */}
-      <div className="flex items-center justify-end gap-5">
+      <div className="header-derecha">
 
         {(isShop || isUser) && (
           <Link to="/">
-            <img src={arrow} alt="back" className="h-5 cursor-pointer" />
+            <img src={arrow} alt="back" className="header-icono" />
           </Link>
         )}
 
@@ -112,20 +113,20 @@ function Header() {
           src={isLogged ? userCheck : user}
           alt="user"
           onClick={handleUserClick}
-          className="h-5 cursor-pointer"
+          className="header-icono"
         />
 
         <img
           src={bag}
           alt="bag"
           onClick={() => navigate("/carrito")}
-          className="h-5 cursor-pointer"
+          className="header-icono"
         />
 
         {isHome && (
           <>
-            <img src={heart} alt="heart" className="h-5" />
-            <img src={menu} alt="menu" className="h-5" />
+            <img src={heart} alt="heart" className="header-icono" />
+            <img src={menu} alt="menu" className="header-icono" />
           </>
         )}
 
