@@ -525,3 +525,47 @@ body.dark-mode .headerAdmin {
 body.dark-mode .volverAdmin {
     color: #e0e0e0;
 }
+
+/* ============================================ */
+/* CORRECCIONES FALTANTES                       */
+/* ============================================ */
+
+/* Texto "Hombre" y "Mujer" en la página Home */
+body.dark-mode .generos a {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .generos a:visited,
+body.dark-mode .generos a:active,
+body.dark-mode .generos a:hover {
+    color: #e0e0e0 !important;
+}
+
+/* Flecha de volver atrás (arrow) en Header y otras páginas */
+body.dark-mode .header-icono[src*="arrow-left"],
+body.dark-mode img[alt="back"],
+body.dark-mode .volver img,
+body.dark-mode .volverAdmin img,
+body.dark-mode .header-icono.arrow-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Botón volver en páginas de login/registro */
+body.dark-mode .volver,
+body.dark-mode .volverAdmin {
+    color: #e0e0e0 !important;
+}
+
+/* Cualquier otro texto que pueda estar en negro */
+body.dark-mode .generos p {
+    color: #e0e0e0 !important;
+}
+
+/* Links en general que puedan estar en negro */
+body.dark-mode a:not(.sort):not(.filter) {
+    color: #e0e0e0;
+}
+
+body.dark-mode a:not(.sort):not(.filter):hover {
+    color: #bbbbbb;
+}
