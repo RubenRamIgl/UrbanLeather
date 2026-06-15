@@ -3,9 +3,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     margin-top: 60px;
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Avatar */
@@ -27,11 +26,9 @@
     gap: 18px;
     align-items: center;
     justify-content: center;
-
     width: 100%;
 }
 
-/* Texto opciones */
 .opciones p {
     font-size: 16px;
     font-weight: bold;
@@ -45,114 +42,294 @@
     color: black;
 }
 
-/* Formularios admin (igual que usuario pero reutilizable) */
+/* ========================= */
+/* FORMULARIOS MEJORADOS     */
+/* ========================= */
+
 .formDireccion {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-
-    margin-top: 20px;
-    width: 300px;
+    gap: 16px;
+    width: 100%;
 }
 
-/* Inputs */
-.formDireccion input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-family: 'Montserrat';
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
 }
 
-/* Botón */
-.cerrarSesion {
-    margin-top: 20px;
+.input-group label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+}
 
-    padding: 10px 20px;
-    font-size: 16px;
+.formDireccion input,
+.formDireccion select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background-color: #fafafa;
+    box-sizing: border-box;
+}
 
-    color: white;
-    background-color: black;
+.formDireccion input:focus,
+.formDireccion select:focus {
+    outline: none;
+    border-color: #000;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
 
-    border: none;
-    border-radius: 25px;
-
+.formDireccion select {
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
 }
 
-.cerrarSesion:hover {
+.formDireccion button {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background-color: #000;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 8px;
+}
+
+.formDireccion button:hover {
+    background-color: #333;
+    transform: translateY(-1px);
+}
+
+.formDireccion button:active {
+    transform: translateY(0);
+}
+
+.formDireccion button.secondary {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.formDireccion button.secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.button-group button {
+    flex: 1;
+}
+
+/* Tarjetas */
+.form-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    margin-top: 24px;
+}
+
+.form-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Info card */
+.info-card {
+    background-color: #f8f8f8;
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 24px;
+}
+
+.info-card p {
+    margin: 8px 0;
+}
+
+.info-card hr {
+    margin: 12px 0;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Producto encontrado */
+.producto-encontrado {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.producto-encontrado img {
+    max-width: 200px;
+    border-radius: 8px;
+}
+
+/* Stock items */
+.stock-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stock-item span:first-child {
+    font-weight: bold;
+    width: 60px;
+}
+
+.stock-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.stock-controls button {
+    padding: 4px 12px;
+    margin: 0;
+    font-size: 16px;
+    min-width: 36px;
+}
+
+/* Compras */
+.compras-container {
+    max-height: 500px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.compra-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.compra-header {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.estado-pagado {
+    color: green;
+    font-weight: bold;
+}
+
+.estado-pendiente {
+    color: orange;
+    font-weight: bold;
+}
+
+.producto-item {
+    border-left: 3px solid #ccc;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.compras-resumen {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border-radius: 5px;
+    text-align: right;
+}
+
+.no-compras {
+    text-align: center;
+    color: gray;
+    margin: 20px 0;
+}
+
+/* ========================= */
+/* MODO OSCURO               */
+/* ========================= */
+
+body.dark-mode .formDireccion input,
+body.dark-mode .formDireccion select {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .formDireccion input:focus,
+body.dark-mode .formDireccion select:focus {
+    border-color: #e0e0e0;
     background-color: #333;
 }
 
-.cerrarSesion:active {
-    background-color: #555;
-    transform: scale(0.95);
+body.dark-mode .form-card {
+    background-color: #2a2a2a;
 }
 
-/* =========================
-   BOTONES ADMIN NEGROS
-   (aplica a TODOS los botones)
-   ========================= */
-
-.formDireccion button {
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 600;
-
-    color: white;
-    background-color: black;
-
-    border: none;
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    transition: all 0.2s ease;
-    font-family: 'Montserrat';
+body.dark-mode .info-card {
+    background-color: #2a2a2a;
 }
 
-/* Hover elegante */
-.formDireccion button:hover {
-    background-color: #222;
-    transform: translateY(-2px);
+body.dark-mode .info-card hr {
+    border-color: #3a3a3a;
 }
 
-/* Click */
-.formDireccion button:active {
-    transform: scale(0.97);
+body.dark-mode .stock-item {
+    border-color: #3a3a3a;
 }
 
-
-/* (opcional) botones en opciones del menú */
-.opciones p {
-    transition: 0.2s ease;
+body.dark-mode .input-group label {
+    color: #aaa;
 }
 
-.opciones p:hover {
-    transform: scale(1.05);
-    color: black;
+body.dark-mode .compra-card {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
 }
 
-.headerAdmin {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-bottom: 30px;
-    padding-top: 20px;
+body.dark-mode .compra-header {
+    border-bottom-color: #e0e0e0;
 }
 
-.volverAdmin {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+body.dark-mode .producto-item {
+    border-left-color: #555;
+}
 
-    color: #000;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    cursor: pointer;
+body.dark-mode .compras-resumen {
+    background-color: #1a3a2a;
+}
+
+body.dark-mode .formDireccion button.secondary {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .formDireccion button.secondary:hover {
+    background-color: #4a4a4a;
 }

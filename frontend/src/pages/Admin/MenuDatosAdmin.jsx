@@ -58,7 +58,7 @@ function MenuDatosAdmin() {
 
   const [comprasUsuario, setComprasUsuario] = useState([]);
   const [showComprasUsuario, setShowComprasUsuario] = useState(false);
-  const [cargandoCompras, setCargandoCompras] = useState(false); // Estado de carga
+  const [cargandoCompras, setCargandoCompras] = useState(false);
 
   const resetVistas = () => {
     setShowProducto(false);
@@ -67,9 +67,8 @@ function MenuDatosAdmin() {
     setShowBuscarUsuario(false);
     setShowGestionStock(false);
     setShowComprasUsuario(false);
-
     setModoUsuario(null);
-    setComprasUsuario([]); // Limpiar compras al resetear
+    setComprasUsuario([]);
   };
 
   // =========================
@@ -223,7 +222,7 @@ function MenuDatosAdmin() {
   };
 
   // =========================
-  // 👤 BUSCAR USUARIO (VER / EDITAR / ELIMINAR)
+  // BUSCAR USUARIO (VER / EDITAR / ELIMINAR)
   // =========================
   const handleBuscarUsuario = async () => {
     try {
@@ -244,7 +243,6 @@ function MenuDatosAdmin() {
         return;
       }
 
-      // VER / EDITAR
       const res = await api.get(`/miPerfil?username=${searchUsername}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -316,7 +314,7 @@ function MenuDatosAdmin() {
   };
 
   // =========================
-  // BUSCAR COMPRAS DEL USUARIO (CORREGIDO)
+  // BUSCAR COMPRAS DEL USUARIO
   // =========================
   const buscarComprasUsuario = async () => {
     try {
@@ -328,14 +326,12 @@ function MenuDatosAdmin() {
       setCargandoCompras(true);
       const token = localStorage.getItem("token");
 
-      // Endpoint que devuelve DetalleCompraDTO (con información de compra incluida)
       const res = await api.get(`/detalleCompra/misDetalles?username=${searchUsername}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       console.log("Respuesta completa:", res.data);
 
-      // Verificar que la respuesta es un array
       if (Array.isArray(res.data)) {
         setComprasUsuario(res.data);
         if (res.data.length === 0) {
@@ -345,7 +341,6 @@ function MenuDatosAdmin() {
         setComprasUsuario([]);
         alert("Formato de datos incorrecto");
       }
-
     } catch (error) {
       console.error("Error al buscar compras:", error);
       alert("Error al buscar compras del usuario");
@@ -355,7 +350,6 @@ function MenuDatosAdmin() {
     }
   };
 
-  // Función para agrupar compras por ID de compra
   const agruparComprasPorId = (detalles) => {
     const comprasMap = new Map();
 
@@ -387,77 +381,123 @@ function MenuDatosAdmin() {
   };
 
   return (
-    <div className="usuarioPage">
-      <div className="usuarioHeaderCenter">
-        <img src={userIcon} alt="Admin" className="usuarioAvatar" />
+    <div className="adminPage">
+      <div className="adminHeaderCenter">
+        <img src={userIcon} alt="Admin" className="adminAvatar" />
       </div>
 
       <div className="opciones">
-        {/* USUARIOS */}
         <p onClick={() => { resetVistas(); handleOpenBuscarUsuario(); }}>Ver usuario</p>
         <p onClick={() => { resetVistas(); handleEditarUsuario(); }}>Modificar usuario</p>
         <p onClick={() => { resetVistas(); handleOpenEliminarUsuario(); }}>Eliminar usuario</p>
-
-        {/* PRODUCTOS */}
         <p onClick={() => { resetVistas(); handleOpenProducto(); }}>Añadir producto</p>
         <p onClick={() => { resetVistas(); handleOpenBuscarProducto(); }}>Buscar producto</p>
         <p onClick={() => { resetVistas(); handleOpenModificarProducto(); }}>Modificar producto</p>
-
-        {/* STOCK */}
         <p onClick={() => { resetVistas(); setShowGestionStock(true); }}>Gestionar stock tallas</p>
-
-        {/* COMPRAS */}
         <p onClick={() => { resetVistas(); setShowComprasUsuario(true); setComprasUsuario([]); setSearchUsername(""); }}>Ver compras usuario</p>
-
         <p className="logout" onClick={handleLogout}>Cerrar sesión</p>
       </div>
 
-      {/* CREAR PRODUCTO */}
+      {/* ========================= */}
+      {/* CREAR PRODUCTO - MEJORADO */}
+      {/* ========================= */}
       {showProducto && (
-        <div className="formDireccion">
-          <input name="nombre" placeholder="Nombre" onChange={handleProductoChange} />
-          <input name="descripcion" placeholder="Descripción" onChange={handleProductoChange} />
-          <input name="precio" placeholder="Precio" onChange={handleProductoChange} />
-          <input name="color" placeholder="Color" onChange={handleProductoChange} />
-          <select name="categoriaId" onChange={handleProductoChange}>
-            <option value="">Selecciona categoría</option>
-            <option value="1">Hombre</option>
-            <option value="2">Mujer</option>
-          </select>
-          <input type="file" onChange={(e) => setImagenFile(e.target.files[0])} />
-          <button onClick={handleCrearProducto}>Crear producto</button>
+        <div className="form-card">
+          <h3>Crear nuevo producto</h3>
+          <div className="formDireccion">
+            <div className="input-group">
+              <label>NOMBRE</label>
+              <input name="nombre" placeholder="Ej: Camiseta Oversize" onChange={handleProductoChange} />
+            </div>
+            <div className="input-group">
+              <label>DESCRIPCIÓN</label>
+              <input name="descripcion" placeholder="Descripción del producto" onChange={handleProductoChange} />
+            </div>
+            <div className="input-group">
+              <label>PRECIO (€)</label>
+              <input name="precio" type="number" step="0.01" placeholder="0.00" onChange={handleProductoChange} />
+            </div>
+            <div className="input-group">
+              <label>COLOR</label>
+              <input name="color" placeholder="Ej: Negro, Blanco, Rojo" onChange={handleProductoChange} />
+            </div>
+            <div className="input-group">
+              <label>CATEGORÍA</label>
+              <select name="categoriaId" onChange={handleProductoChange}>
+                <option value="">Selecciona categoría</option>
+                <option value="1">Hombre</option>
+                <option value="2">Mujer</option>
+              </select>
+            </div>
+            <div className="input-group">
+              <label>IMAGEN</label>
+              <input type="file" onChange={(e) => setImagenFile(e.target.files[0])} />
+            </div>
+            <button onClick={handleCrearProducto}>Crear producto</button>
+          </div>
         </div>
       )}
 
-      {/* BUSCAR USUARIO */}
+      {/* ========================= */}
+      {/* BUSCAR USUARIO - MEJORADO */}
+      {/* ========================= */}
       {showBuscarUsuario && (
-        <div className="formDireccion">
-          <input
-            type="text"
-            placeholder="Introduce username"
-            value={searchUsername}
-            onChange={(e) => setSearchUsername(e.target.value)}
-          />
-          <button onClick={handleBuscarUsuario}>
-            {modoUsuario === "eliminar" ? "Eliminar usuario" : "Buscar usuario"}
-          </button>
+        <div className="form-card">
+          <h3>{modoUsuario === "eliminar" ? "Eliminar usuario" : "Buscar usuario"}</h3>
+          <div className="formDireccion">
+            <div className="input-group">
+              <label>USERNAME</label>
+              <input
+                type="text"
+                placeholder="Introduce el username"
+                value={searchUsername}
+                onChange={(e) => setSearchUsername(e.target.value)}
+              />
+            </div>
+            <button onClick={handleBuscarUsuario}>
+              {modoUsuario === "eliminar" ? "Eliminar usuario" : "Buscar usuario"}
+            </button>
+          </div>
         </div>
       )}
 
-      {/* EDITAR USUARIO */}
+      {/* ========================= */}
+      {/* EDITAR USUARIO - MEJORADO */}
+      {/* ========================= */}
       {modoUsuario === "editar" && (
-        <form onSubmit={handleSubmitUsuario} className="formDireccion">
-          <input name="nombre" value={usuario.nombre} onChange={handleChange} placeholder="Nombre" />
-          <input name="apellido" value={usuario.apellido} onChange={handleChange} placeholder="Apellido" />
-          <input name="email" value={usuario.email} onChange={handleChange} placeholder="Email" />
-          <input name="username" value={usuario.username} onChange={handleChange} placeholder="Username" />
-          <button type="submit" className="cerrarSesion">Guardar cambios</button>
-        </form>
+        <div className="form-card">
+          <h3>Editar usuario</h3>
+          <form onSubmit={handleSubmitUsuario} className="formDireccion">
+            <div className="input-group">
+              <label>NOMBRE</label>
+              <input name="nombre" value={usuario.nombre} onChange={handleChange} placeholder="Nombre" />
+            </div>
+            <div className="input-group">
+              <label>APELLIDO</label>
+              <input name="apellido" value={usuario.apellido} onChange={handleChange} placeholder="Apellido" />
+            </div>
+            <div className="input-group">
+              <label>EMAIL</label>
+              <input name="email" value={usuario.email} onChange={handleChange} placeholder="Email" />
+            </div>
+            <div className="input-group">
+              <label>USERNAME</label>
+              <input name="username" value={usuario.username} onChange={handleChange} placeholder="Username" />
+            </div>
+            <div className="button-group">
+              <button type="button" className="secondary" onClick={() => setModoUsuario(null)}>Cancelar</button>
+              <button type="submit">Guardar cambios</button>
+            </div>
+          </form>
+        </div>
       )}
 
-      {/* VER USUARIO */}
+      {/* ========================= */}
+      {/* VER USUARIO - MEJORADO */}
+      {/* ========================= */}
       {modoUsuario === "ver" && (
-        <div className="formDireccion">
+        <div className="info-card">
+          <h3>Información del usuario</h3>
           <p><strong>Nombre:</strong> {usuario.nombre}</p>
           <p><strong>Apellido:</strong> {usuario.apellido}</p>
           <p><strong>Email:</strong> {usuario.email}</p>
@@ -474,145 +514,183 @@ function MenuDatosAdmin() {
           ) : (
             <p>No tiene dirección registrada</p>
           )}
+          <button className="secondary" onClick={() => setModoUsuario(null)} style={{ marginTop: "16px", width: "100%" }}>Cerrar</button>
         </div>
       )}
 
-      {/* BUSCAR PRODUCTO */}
+      {/* ========================= */}
+      {/* BUSCAR PRODUCTO - MEJORADO */}
+      {/* ========================= */}
       {showBuscarProducto && (
-        <div className="formDireccion">
-          <input
-            type="text"
-            placeholder="Nombre producto"
-            value={searchProducto}
-            onChange={(e) => setSearchProducto(e.target.value)}
-          />
-          <button onClick={handleBuscarProducto}>Buscar producto</button>
-          {productoEncontrado && !showModificarProducto && (
-            <div>
-              <img src={productoEncontrado.imagen_url} alt="" style={{ maxWidth: "200px" }} />
-              <p><strong>Nombre:</strong> {productoEncontrado.nombre}</p>
-              <p><strong>Descripción:</strong> {productoEncontrado.descripcion}</p>
-              <p><strong>Precio:</strong> {productoEncontrado.precio}€</p>
-              <p><strong>Color:</strong> {productoEncontrado.color}</p>
+        <div className="form-card">
+          <h3>Buscar producto</h3>
+          <div className="formDireccion">
+            <div className="input-group">
+              <label>NOMBRE DEL PRODUCTO</label>
+              <input
+                type="text"
+                placeholder="Ej: Camiseta, Pantalón..."
+                value={searchProducto}
+                onChange={(e) => setSearchProducto(e.target.value)}
+              />
             </div>
-          )}
+            <button onClick={handleBuscarProducto}>Buscar producto</button>
+            {productoEncontrado && !showModificarProducto && (
+              <div className="producto-encontrado">
+                <img src={productoEncontrado.imagen_url} alt="" />
+                <p><strong>Nombre:</strong> {productoEncontrado.nombre}</p>
+                <p><strong>Descripción:</strong> {productoEncontrado.descripcion}</p>
+                <p><strong>Precio:</strong> {productoEncontrado.precio}€</p>
+                <p><strong>Color:</strong> {productoEncontrado.color}</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
-      {/* MODIFICAR PRODUCTO */}
+      {/* ========================= */}
+      {/* MODIFICAR PRODUCTO - MEJORADO */}
+      {/* ========================= */}
       {showModificarProducto && productoEditando && (
-        <div className="formDireccion">
-          <input
-            value={productoEditando.nombre}
-            onChange={(e) => setProductoEditando({ ...productoEditando, nombre: e.target.value })}
-            placeholder="Nombre"
-          />
-          <input
-            value={productoEditando.descripcion}
-            onChange={(e) => setProductoEditando({ ...productoEditando, descripcion: e.target.value })}
-            placeholder="Descripción"
-          />
-          <input
-            value={productoEditando.precio}
-            onChange={(e) => setProductoEditando({ ...productoEditando, precio: e.target.value })}
-            placeholder="Precio"
-          />
-          <input
-            value={productoEditando.color}
-            onChange={(e) => setProductoEditando({ ...productoEditando, color: e.target.value })}
-            placeholder="Color"
-          />
-          <input type="file" onChange={(e) => setProductoEditando({ ...productoEditando, nuevaImagen: e.target.files[0] })} />
-          <button onClick={async () => {
-            const token = localStorage.getItem("token");
-            let imageUrl = productoEditando.imagen_url;
-            if (productoEditando.nuevaImagen) {
-              const formData = new FormData();
-              formData.append("file", productoEditando.nuevaImagen);
-              const resImg = await api.post("/files/upload", formData, {
-                headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
-              });
-              imageUrl = resImg.data;
-            }
-            await api.put(`/productoUpdate/${productoEditando.id}`, {
-              ...productoEditando,
-              imagen_url: imageUrl
-            }, { headers: { Authorization: `Bearer ${token}` } });
-            alert("Producto actualizado");
-            setShowModificarProducto(false);
-            setProductoEditando(null);
-          }}>Guardar cambios</button>
-        </div>
-      )}
-
-      {/* GESTIONAR STOCK */}
-      {showGestionStock && (
-        <div className="formDireccion">
-          <input
-            placeholder="Nombre producto"
-            value={searchStockProducto}
-            onChange={(e) => setSearchStockProducto(e.target.value)}
-          />
-          <button onClick={buscarProductoStock}>Buscar producto</button>
-          {productoStock && (
-            <div>
-              <h4>{productoStock.nombre}</h4>
-              {tallasStock.map((t) => (
-                <div key={t.id} style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "10px" }}>
-                  <span><strong>{t.nombre}</strong></span>
-                  <span>Stock: {t.stock}</span>
-                  <button onClick={() => cambiarStock(t.id, 1)}>+</button>
-                  <button onClick={() => cambiarStock(t.id, -1)}>-</button>
-                </div>
-              ))}
+        <div className="form-card">
+          <h3>Modificar producto</h3>
+          <div className="formDireccion">
+            <div className="input-group">
+              <label>NOMBRE</label>
+              <input
+                value={productoEditando.nombre}
+                onChange={(e) => setProductoEditando({ ...productoEditando, nombre: e.target.value })}
+                placeholder="Nombre"
+              />
             </div>
-          )}
+            <div className="input-group">
+              <label>DESCRIPCIÓN</label>
+              <input
+                value={productoEditando.descripcion}
+                onChange={(e) => setProductoEditando({ ...productoEditando, descripcion: e.target.value })}
+                placeholder="Descripción"
+              />
+            </div>
+            <div className="input-group">
+              <label>PRECIO (€)</label>
+              <input
+                value={productoEditando.precio}
+                onChange={(e) => setProductoEditando({ ...productoEditando, precio: e.target.value })}
+                placeholder="Precio"
+              />
+            </div>
+            <div className="input-group">
+              <label>COLOR</label>
+              <input
+                value={productoEditando.color}
+                onChange={(e) => setProductoEditando({ ...productoEditando, color: e.target.value })}
+                placeholder="Color"
+              />
+            </div>
+            <div className="input-group">
+              <label>IMAGEN</label>
+              <input type="file" onChange={(e) => setProductoEditando({ ...productoEditando, nuevaImagen: e.target.files[0] })} />
+            </div>
+            <div className="button-group">
+              <button type="button" className="secondary" onClick={() => setShowModificarProducto(false)}>Cancelar</button>
+              <button onClick={async () => {
+                const token = localStorage.getItem("token");
+                let imageUrl = productoEditando.imagen_url;
+                if (productoEditando.nuevaImagen) {
+                  const formData = new FormData();
+                  formData.append("file", productoEditando.nuevaImagen);
+                  const resImg = await api.post("/files/upload", formData, {
+                    headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+                  });
+                  imageUrl = resImg.data;
+                }
+                await api.put(`/productoUpdate/${productoEditando.id}`, {
+                  ...productoEditando,
+                  imagen_url: imageUrl
+                }, { headers: { Authorization: `Bearer ${token}` } });
+                alert("Producto actualizado");
+                setShowModificarProducto(false);
+                setProductoEditando(null);
+              }}>Guardar cambios</button>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* VER COMPRAS DE USUARIO - CORREGIDO */}
+      {/* ========================= */}
+      {/* GESTIONAR STOCK - MEJORADO */}
+      {/* ========================= */}
+      {showGestionStock && (
+        <div className="form-card">
+          <h3>Gestionar stock</h3>
+          <div className="formDireccion">
+            <div className="input-group">
+              <label>PRODUCTO</label>
+              <input
+                placeholder="Nombre del producto"
+                value={searchStockProducto}
+                onChange={(e) => setSearchStockProducto(e.target.value)}
+              />
+            </div>
+            <button onClick={buscarProductoStock}>Buscar producto</button>
+            {productoStock && (
+              <div>
+                <h4>{productoStock.nombre}</h4>
+                {tallasStock.map((t) => (
+                  <div key={t.id} className="stock-item">
+                    <span><strong>{t.nombre}</strong></span>
+                    <span>Stock: {t.stock}</span>
+                    <div className="stock-controls">
+                      <button onClick={() => cambiarStock(t.id, 1)}>+</button>
+                      <button onClick={() => cambiarStock(t.id, -1)}>-</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ========================= */}
+      {/* VER COMPRAS USUARIO - MEJORADO */}
+      {/* ========================= */}
       {showComprasUsuario && (
-        <div className="formDireccion">
+        <div className="form-card">
           <h3>Buscar compras de usuario</h3>
-          <input
-            type="text"
-            placeholder="Username del usuario"
-            value={searchUsername}
-            onChange={(e) => setSearchUsername(e.target.value)}
-          />
-          <button onClick={buscarComprasUsuario} disabled={cargandoCompras}>
-            {cargandoCompras ? "Buscando..." : "Buscar compras"}
-          </button>
+          <div className="formDireccion">
+            <div className="input-group">
+              <label>USERNAME</label>
+              <input
+                type="text"
+                placeholder="Username del usuario"
+                value={searchUsername}
+                onChange={(e) => setSearchUsername(e.target.value)}
+              />
+            </div>
+            <button onClick={buscarComprasUsuario} disabled={cargandoCompras}>
+              {cargandoCompras ? "Buscando..." : "Buscar compras"}
+            </button>
+          </div>
 
           {!cargandoCompras && comprasUsuario.length > 0 && (
-            <div style={{ marginTop: "20px" }}>
+            <div className="compras-container">
               <h3>Compras del usuario: {searchUsername}</h3>
               {agruparComprasPorId(comprasUsuario).map((compra) => (
-                <div key={compra.id} style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  padding: "15px",
-                  marginBottom: "20px",
-                  backgroundColor: "#f9f9f9"
-                }}>
-                  <div style={{ borderBottom: "2px solid #333", paddingBottom: "10px", marginBottom: "10px" }}>
+                <div key={compra.id} className="compra-card">
+                  <div className="compra-header">
                     <p><strong>Pedido #:</strong> {compra.id}</p>
                     <p><strong>Fecha:</strong> {new Date(compra.fecha).toLocaleString()}</p>
-                    <p><strong>Estado:</strong> <span style={{
-                      color: compra.estado === "PAGADO" ? "green" : "orange",
-                      fontWeight: "bold"
-                    }}>{compra.estado}</span></p>
+                    <p><strong>Estado:</strong>
+                      <span className={compra.estado === "PAGADO" ? "estado-pagado" : "estado-pendiente"}>
+                        {" "}{compra.estado}
+                      </span>
+                    </p>
                     <p><strong>Total del pedido:</strong> ${compra.total?.toFixed(2) || compra.total} €</p>
                   </div>
-
                   <h4>Detalles del pedido:</h4>
                   {compra.detalles.map((detalle, idx) => (
-                    <div key={idx} style={{
-                      borderLeft: "3px solid #ccc",
-                      paddingLeft: "10px",
-                      marginBottom: "10px",
-                      marginLeft: "10px"
-                    }}>
+                    <div key={idx} className="producto-item">
                       <p><strong>Producto:</strong> {detalle.nombreProducto}</p>
                       <p><strong>Talla:</strong> {detalle.talla}</p>
                       <p><strong>Cantidad:</strong> {detalle.cantidad}</p>
@@ -623,17 +701,14 @@ function MenuDatosAdmin() {
                   <hr />
                 </div>
               ))}
-
-              <div style={{ marginTop: "15px", textAlign: "right" }}>
+              <div className="compras-resumen">
                 <p><strong>Total gastado:</strong> ${comprasUsuario.reduce((sum, d) => sum + (d.precioUnitario * d.cantidad), 0).toFixed(2)} €</p>
               </div>
             </div>
           )}
 
           {!cargandoCompras && comprasUsuario.length === 0 && searchUsername && (
-            <p style={{ marginTop: "20px", color: "gray", textAlign: "center" }}>
-              No hay compras para el usuario "{searchUsername}"
-            </p>
+            <p className="no-compras">No hay compras para el usuario "{searchUsername}"</p>
           )}
         </div>
       )}
