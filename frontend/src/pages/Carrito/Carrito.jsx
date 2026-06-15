@@ -62,6 +62,9 @@ function Carrito() {
       const response = await api.post("/compra/checkout");
       console.log("Compra realizada:", response.data);
 
+      // Mostrar mensaje de éxito antes de redirigir
+      alert("✅ ¡Compra realizada con éxito!");
+
       // Redirigir a la página de confirmación con los datos de la compra
       navigate("/compra/confirmacion", {
         state: { compra: response.data }
