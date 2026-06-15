@@ -9,7 +9,8 @@ import heart from "../../assets/images/heart.svg";
 import menu from "../../assets/images/align-right.svg";
 import arrow from "../../assets/images/arrow-left.svg";
 import filterIcon from "../../assets/images/settings.svg";
-import "./Header.css"; // Importamos el CSS
+import "./Header.css";
+import ThemeToggle from "./ThemeToggle";
 
 function Header() {
   const location = useLocation();
@@ -102,6 +103,8 @@ function Header() {
 
       {/* DERECHA */}
       <div className="header-derecha">
+
+        <ThemeToggle />
 
         {(isShop || isUser) && (
           <Link to="/">

@@ -36,3 +36,30 @@
   border-radius: 6px;
   outline: none;
 }
+
+/* Botón de cambio de tema */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-tertiary, #f3f4f6);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--icon-color, #000000);
+}
+
+body.dark-mode .theme-toggle svg {
+    stroke: #ffffff;
+}
