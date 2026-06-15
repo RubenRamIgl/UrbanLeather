@@ -9,7 +9,7 @@ function MenuDatosUsuario() {
   const navigate = useNavigate();
 
   const [modo, setModo] = useState(null);
-  // null | "add" | "edit" | "user"
+  // null | "add" | "edit" | "user" | "compras"
 
   const [datosUsuario, setDatosUsuario] = useState({
     nombre: "",
@@ -26,8 +26,11 @@ function MenuDatosUsuario() {
     municipio: ""
   });
 
+  // Estado para compras
+  const [comprasUsuario, setComprasUsuario] = useState([]);
+
   // =========================
-  // 🟣 INPUT USUARIO
+  // INPUT USUARIO
   // =========================
   const handleChangeUsuario = (e) => {
     setDatosUsuario({
@@ -37,7 +40,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 🔵 INPUT DIRECCIÓN
+  // INPUT DIRECCIÓN
   // =========================
   const handleChangeDireccion = (e) => {
     setDireccion({
@@ -47,7 +50,48 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 🔵 AÑADIR DIRECCIÓN
+  // VER MIS COMPRAS
+  // =========================
+  const handleVerMisCompras = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await api.get("/detalleCompra/misDetalles", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setComprasUsuario(res.data);
+      setModo("compras");
+
+    } catch (error) {
+      console.error("Error al obtener compras:", error);
+      alert("Error al cargar tus compras");
+    }
+  };
+
+  // Función para agrupar compras por ID
+  const agruparComprasPorId = (detalles) => {
+    const comprasMap = new Map();
+
+    detalles.forEach(detalle => {
+      const compraId = detalle.compraId;
+      if (!comprasMap.has(compraId)) {
+        comprasMap.set(compraId, {
+          id: compraId,
+          fecha: detalle.fechaCompra,
+          estado: detalle.estadoCompra,
+          total: detalle.totalCompra,
+          detalles: []
+        });
+      }
+      comprasMap.get(compraId).detalles.push(detalle);
+    });
+
+    return Array.from(comprasMap.values());
+  };
+
+  // =========================
+  //AÑADIR DIRECCIÓN
   // =========================
   const handleAddDireccion = async () => {
     try {
@@ -77,7 +121,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 🟣 EDITAR USUARIO
+  // EDITAR USUARIO
   // =========================
   const handleEditUsuario = async () => {
     try {
@@ -102,7 +146,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 🟡 EDITAR DIRECCIÓN
+  // EDITAR DIRECCIÓN
   // =========================
   const handleEditDireccion = async () => {
     try {
@@ -135,7 +179,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 💾 GUARDAR DIRECCIÓN
+  // GUARDAR DIRECCIÓN
   // =========================
   const handleSubmitDireccion = async (e) => {
     e.preventDefault();
@@ -165,7 +209,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 💾 GUARDAR USUARIO
+  // GUARDAR USUARIO
   // =========================
   const handleSubmitUsuario = async (e) => {
     e.preventDefault();
@@ -201,7 +245,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 🗑️ ELIMINAR DIRECCIÓN
+  // ELIMINAR DIRECCIÓN
   // =========================
   const handleDeleteDireccion = async () => {
     try {
@@ -223,7 +267,7 @@ function MenuDatosUsuario() {
   };
 
   // =========================
-  // 🚪 LOGOUT
+  // LOGOUT
   // =========================
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -264,11 +308,14 @@ function MenuDatosUsuario() {
           Eliminar dirección
         </p>
 
+        <p onClick={handleVerMisCompras}>
+          Ver mis compras
+        </p>
+
         <p>
           Eliminar mi usuario
         </p>
 
-        {/* 🔥 SIEMPRE VISIBLE */}
         <p className="logout" onClick={handleLogout}>
           Cerrar sesión
         </p>
@@ -308,6 +355,54 @@ function MenuDatosUsuario() {
         </form>
       )}
 
+      {/* VER MIS COMPRAS */}
+      {modo === "compras" && (
+        <div className="formDireccion">
+          <h3 className="compras-titulo">Mis compras</h3>
+
+          {comprasUsuario.length > 0 ? (
+            <div className="compras-container">
+              {agruparComprasPorId(comprasUsuario).map((compra) => (
+                <div key={compra.id} className="compra-card">
+                  <div className="compra-header">
+                    <p><strong>Pedido #:</strong> {compra.id}</p>
+                    <p><strong>Fecha:</strong> {new Date(compra.fecha).toLocaleString()}</p>
+                    <p><strong>Estado:</strong>
+                      <span className={compra.estado === "PAGADO" ? "estado-pagado" : "estado-pendiente"}>
+                        {" "}{compra.estado}
+                      </span>
+                    </p>
+                    <p><strong>Total:</strong> ${compra.total?.toFixed(2) || compra.total} €</p>
+                  </div>
+
+                  <h4 className="productos-subtitulo">Productos:</h4>
+                  {compra.detalles.map((detalle, idx) => (
+                    <div key={idx} className="producto-item">
+                      <p className="producto-nombre">{detalle.nombreProducto}</p>
+                      <p className="producto-detalles">
+                        Talla: {detalle.talla} | Cantidad: {detalle.cantidad} | Precio: ${detalle.precioUnitario?.toFixed(2)} €
+                      </p>
+                    </div>
+                  ))}
+                  <hr className="separador" />
+                </div>
+              ))}
+
+              <div className="compras-resumen">
+                <p><strong>Total gastado:</strong> ${comprasUsuario.reduce((sum, d) => sum + (d.precioUnitario * d.cantidad), 0).toFixed(2)} €</p>
+                <p><strong>Total de productos:</strong> {comprasUsuario.reduce((sum, d) => sum + d.cantidad, 0)} unidades</p>
+                <p><strong>Número de pedidos:</strong> {new Set(comprasUsuario.map(d => d.compraId)).size}</p>
+              </div>
+            </div>
+          ) : (
+            <p className="no-compras">No tienes compras realizadas</p>
+          )}
+
+          <button onClick={() => setModo(null)} className="cerrarSesion">
+            Cerrar
+          </button>
+        </div>
+      )}
     </div>
   );
 }
