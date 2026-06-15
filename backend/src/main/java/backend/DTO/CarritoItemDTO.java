@@ -7,15 +7,17 @@ public class CarritoItemDTO {
     private String nombreProducto;
     private String talla;
     private int cantidad;
+    private double precio;
 
     public CarritoItemDTO() {}
 
-    public CarritoItemDTO(Long itemId, Long productoId, String nombreProducto, String talla, int cantidad) {
+    public CarritoItemDTO(Long itemId, Long productoId, String nombreProducto, String talla, int cantidad, double precio) {
         this.itemId = itemId;
         this.productoId = productoId;
         this.nombreProducto = nombreProducto;
         this.talla = talla;
         this.cantidad = cantidad;
+        this.precio = precio;
     }
 
     public Long getItemId() {
@@ -56,5 +58,13 @@ public class CarritoItemDTO {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }

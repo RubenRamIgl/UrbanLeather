@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.DTO.CompraRegisterDTO;
+import backend.DTO.CompraResponseDTO;
 import backend.model.Compra;
 import backend.service.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,14 +70,10 @@ public class CompraController {
     }
 
     @PostMapping("/compra/checkout")
-    public ResponseEntity<String> checkout() {
-
-        String username =
-                SecurityContextHolder.getContext().getAuthentication().getName();
-
-        compraService.checkout(username);
-
-        return ResponseEntity.ok("Compra realizada correctamente");
+    public ResponseEntity<?> checkout() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        CompraResponseDTO compra = compraService.checkout(username);
+        return ResponseEntity.ok(compra);
     }
 
     /*@GetMapping("/admin/compras/{username}")

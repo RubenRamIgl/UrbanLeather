@@ -109,8 +109,8 @@ public class CarritoService {
      * @return carrito en formato DTO con sus items
      * @throws NoEncontradoException si el carrito no existe
      */
+    // En CarritoService.java
     public CarritoDTO verCarrito(String username) {
-
         Carrito carrito = carritoRepository.findByUsuarioUsername(username)
                 .orElseThrow(() -> new NoEncontradoException("Carrito no encontrado"));
 
@@ -121,11 +121,16 @@ public class CarritoService {
                         i.getProducto().getId(),
                         i.getProducto().getNombre(),
                         i.getTalla().getNombre().name(),
-                        i.getCantidad()
+                        i.getCantidad(),
+                        i.getProducto().getPrecio().doubleValue()
                 ))
                 .collect(Collectors.toList());
 
-        return new CarritoDTO(username, items);
+        double total = items.stream()
+                .mapToDouble(item -> item.getPrecio() * item.getCantidad())
+                .sum();
+
+        return new CarritoDTO(username, items, total);
     }
 
     /**

@@ -1,6 +1,8 @@
 package backend.service;
 
 import backend.DTO.CompraRegisterDTO;
+import backend.DTO.CompraResponseDTO;
+import backend.DTO.DetalleCompraResponseDTO;
 import backend.error.excepciones.NoEncontradoException;
 import backend.error.excepciones.PeticionIncorrectaException;
 import backend.model.*;
@@ -154,36 +156,35 @@ public class CompraService {
         return compraRepository.findByUsuarioUsername(usernameActual);
     }
 
-    public void checkout(String username) {
+    // En CompraService.java - REEMPLAZAR el método checkout()
+    public CompraResponseDTO checkout(String username) {
 
         Carrito carrito = carritoRepository.findByUsuarioUsername(username)
                 .orElseThrow(() -> new NoEncontradoException("Carrito no encontrado"));
 
-        List<CarritoItem> items =
-                carritoItemRepository.findByCarritoId(carrito.getId());
+        List<CarritoItem> items = carritoItemRepository.findByCarritoId(carrito.getId());
 
         if (items.isEmpty()) {
             throw new PeticionIncorrectaException("El carrito está vacío");
         }
 
+        // Crear la compra
         Compra compra = new Compra();
         compra.setUsuario(carrito.getUsuario());
         compra.setFecha(LocalDateTime.now());
         compra.setEstado(Compra.EstadoCompra.PAGADO);
 
         BigDecimal total = BigDecimal.ZERO;
-
         List<DetalleCompra> detalles = new ArrayList<>();
+        List<DetalleCompraResponseDTO> detallesDTO = new ArrayList<>();
 
         for (CarritoItem item : items) {
-
             BigDecimal precio = item.getProducto().getPrecio();
-
-            BigDecimal subtotal =
-                    precio.multiply(BigDecimal.valueOf(item.getCantidad()));
-
+            BigDecimal cantidad = BigDecimal.valueOf(item.getCantidad());
+            BigDecimal subtotal = precio.multiply(cantidad);
             total = total.add(subtotal);
 
+            // Crear entidad DetalleCompra
             DetalleCompra detalle = new DetalleCompra(
                     compra,
                     item.getProducto(),
@@ -192,15 +193,35 @@ public class CompraService {
                     precio,
                     item.getProducto().getNombre()
             );
-
             detalles.add(detalle);
+
+            // Crear DTO para respuesta
+            DetalleCompraResponseDTO detalleDTO = new DetalleCompraResponseDTO(
+                    item.getProducto().getNombre(),
+                    item.getTalla().getNombre().name(),
+                    item.getCantidad(),
+                    precio.doubleValue(),
+                    subtotal.doubleValue()
+            );
+            detallesDTO.add(detalleDTO);
         }
 
         compra.setTotal(total);
         compra.setDetalles(detalles);
 
+        // Guardar compra
         compraRepository.save(compra);
 
+        // Vaciar carrito
         carritoItemRepository.deleteAll(items);
+
+        // Retornar respuesta
+        return new CompraResponseDTO(
+                compra.getId(),
+                compra.getFecha(),
+                compra.getEstado().name(),
+                total.doubleValue(),
+                detallesDTO
+        );
     }
 }
