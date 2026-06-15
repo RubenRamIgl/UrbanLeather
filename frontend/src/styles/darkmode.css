@@ -1,0 +1,594 @@
+/* ============================================ */
+/* HEADER en modo oscuro                        */
+/* ============================================ */
+
+/* Fondo y sombra del header */
+body.dark-mode .header {
+    background-color: #1a1a1a;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Logo - no necesita cambios normalmente, pero si quieres invertirlo: */
+body.dark-mode .header-logo {
+    filter: brightness(0.9);
+}
+
+/* Botón de filtro */
+body.dark-mode .header-filtro-boton {
+    color: #ffffff;
+}
+
+body.dark-mode .header-filtro-icono {
+    filter: brightness(0) invert(1);
+}
+
+/* Dropdown del filtro */
+body.dark-mode .header-filtro-dropdown {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Input del filtro */
+body.dark-mode .header-filtro-input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #404040;
+}
+
+body.dark-mode .header-filtro-input::placeholder {
+    color: #888888;
+}
+
+body.dark-mode .header-filtro-input:focus {
+    border-color: #ffffff;
+}
+
+/* Iconos de la derecha */
+body.dark-mode .header-icono {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-mode .header-icono:hover {
+    filter: brightness(0) invert(0.8);
+    transform: scale(1.05);
+}
+
+/* Botón de tema - ya lo tienes en tu Header.css, pero asegúrate: */
+body.dark-mode .theme-toggle svg {
+    stroke: #ffffff;
+}
+
+body.dark-mode .theme-toggle:hover {
+    background-color: #3a3a3a;
+}
+
+/* ============================================ */
+/* FOOTER en modo oscuro                        */
+/* ============================================ */
+
+body.dark-mode .footer {
+    background-color: #1a1a1a;
+    box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .footer-columna p {
+    color: #ffffff;
+}
+
+body.dark-mode .footer-columna p:hover {
+    color: #aaaaaa;
+}
+
+body.dark-mode .icono-red-social {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-mode .icono-red-social:hover {
+    filter: brightness(0) invert(0.8);
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+/* ============================================ */
+/* HOME en modo oscuro                          */
+/* ============================================ */
+
+/* Links de géneros (Hombre/Mujer) */
+body.dark-mode .generos a {
+    color: #ffffff;
+}
+
+body.dark-mode .generos a:visited,
+body.dark-mode .generos a:active,
+body.dark-mode .generos a:hover {
+    color: #ffffff;
+}
+
+/* Texto de géneros */
+body.dark-mode .generos p {
+    color: #ffffff;
+}
+
+body.dark-mode .rectangle img {
+    filter: brightness(0.85);
+}
+
+/* ============================================ */
+/* INICIO SESIÓN en modo oscuro                 */
+/* ============================================ */
+
+/* Título */
+body.dark-mode .iniciarSesion {
+    color: #ffffff;
+}
+
+/* Botón volver */
+body.dark-mode .volver {
+    color: #ffffff;
+}
+
+/* Inputs del formulario */
+body.dark-mode .formulario input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+body.dark-mode .formulario input::placeholder {
+    color: #888888;
+}
+
+/* Texto inferior "¿No estás registrado?" */
+body.dark-mode .noRegistrado {
+    color: #ffffff;
+}
+
+/* Link de registro */
+body.dark-mode .registrateLink {
+    color: #ffffff;
+}
+
+body.dark-mode .registrateLink:hover {
+    color: #cccccc;
+}
+
+/* ============================================ */
+/* REGISTRO en modo oscuro                      */
+/* ============================================ */
+
+/* Título "Regístrate" */
+body.dark-mode .registrate {
+    color: #ffffff;
+}
+
+/* Botón volver */
+body.dark-mode .volver {
+    color: #ffffff;
+}
+
+/* Inputs del formulario de registro */
+body.dark-mode .formulario input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+body.dark-mode .formulario input::placeholder {
+    color: #888888;
+}
+
+/* Botón aceptar */
+body.dark-mode .aceptar {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .aceptar:hover {
+    background-color: #e0e0e0;
+}
+
+/* ============================================ */
+/* SECCIÓN PRODUCTOS en modo oscuro             */
+/* ============================================ */
+
+/* Header (si no está cubierto por el Header.css) */
+body.dark-mode .header {
+    background-color: #1a1a1a;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Iconos */
+body.dark-mode .icons img {
+    filter: brightness(0) invert(1);
+}
+
+/* Links de ordenar y filtrar */
+body.dark-mode .sort,
+body.dark-mode .filter {
+    color: #ffffff;
+}
+
+/* Título */
+body.dark-mode .titulo p {
+    color: #ffffff;
+}
+
+/* Tarjetas de productos */
+body.dark-mode .chaqueta-name {
+    color: #ffffff;
+}
+
+body.dark-mode .chaqueta-price {
+    color: #ffffff;
+}
+
+body.dark-mode .chaqueta-heart {
+    filter: brightness(0) invert(1);
+}
+
+/* Caja del filtro */
+body.dark-mode .filter-box {
+    background-color: #2d2d2d;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Input del filtro */
+body.dark-mode .filter-input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #404040;
+}
+
+body.dark-mode .filter-input::placeholder {
+    color: #888888;
+}
+
+body.dark-mode .filter-input:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================ */
+/* SECCIÓN MUJER en modo oscuro                 */
+/* ============================================ */
+
+/* Header (si no está cubierto por Header.css) */
+body.dark-mode .header {
+    background-color: #1a1a1a;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Links de ordenar y filtrar */
+body.dark-mode .sort,
+body.dark-mode .filter {
+    color: #ffffff;
+}
+
+/* Iconos */
+body.dark-mode .icons img {
+    filter: brightness(0) invert(1);
+}
+
+/* Título */
+body.dark-mode .titulo p {
+    color: #ffffff;
+}
+
+/* Tarjetas de productos */
+body.dark-mode .chaqueta-name {
+    color: #ffffff;
+}
+
+body.dark-mode .chaqueta-price {
+    color: #ffffff;
+}
+
+body.dark-mode .chaqueta-heart {
+    filter: brightness(0) invert(1);
+}
+
+/* Caja del filtro */
+body.dark-mode .filter-box {
+    background-color: #2d2d2d;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Input del filtro */
+body.dark-mode .filter-input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #404040;
+}
+
+body.dark-mode .filter-input::placeholder {
+    color: #888888;
+}
+
+body.dark-mode .filter-input:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================ */
+/* USUARIO (MenuDatosUsuario) en modo oscuro   */
+/* ============================================ */
+
+/* Contenedor principal */
+body.dark-mode .usuarioPage {
+    background-color: #1a1a1a;
+}
+
+/* Texto de las opciones */
+body.dark-mode .opciones p {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    color: #ffffff;
+}
+
+body.dark-mode .opciones p:hover {
+    background-color: #3a3a3a;
+    transform: scale(1.03);
+}
+
+/* Botón cerrar sesión */
+body.dark-mode .cerrarSesion {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .cerrarSesion:hover {
+    background-color: #e0e0e0;
+}
+
+/* Avatar */
+body.dark-mode .usuarioAvatar {
+    filter: brightness(0.9);
+}
+
+/* ============================================ */
+/* PRODUCTO DETALLE en modo oscuro              */
+/* ============================================ */
+
+/* Contenedor principal */
+body.dark-mode .producto-container {
+    background-color: #1a1a1a;
+}
+
+/* Imagen del producto */
+body.dark-mode .producto-img {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Información del producto */
+body.dark-mode .producto-info h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .producto-info p {
+    color: #cccccc;
+}
+
+body.dark-mode .producto-info .precio {
+    color: #ffffff;
+}
+
+/* Botón de añadir al carrito */
+body.dark-mode .producto-info button {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .producto-info button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Botones de tallas */
+body.dark-mode .tallas button {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+body.dark-mode .tallas button.active {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .tallas button.disabled {
+    background-color: #404040;
+    color: #888888;
+    border-color: #555;
+}
+
+/* ============================================ */
+/* CARRITO en modo oscuro                       */
+/* ============================================ */
+
+/* Contenedor principal */
+body.dark-mode .carrito-container {
+    background-color: #1a1a1a;
+}
+
+/* Acceso para clientes */
+body.dark-mode .carrito-titulo {
+    color: #ffffff;
+}
+
+body.dark-mode .carrito-mensaje {
+    color: #aaaaaa;
+}
+
+body.dark-mode .btn-iniciar-sesion {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .btn-iniciar-sesion:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estado de carga */
+body.dark-mode .spinner {
+    border-color: #404040;
+    border-top-color: #ffffff;
+}
+
+body.dark-mode .cargando-texto {
+    color: #aaaaaa;
+}
+
+/* Título principal */
+body.dark-mode .carrito-titulo-principal {
+    color: #ffffff;
+}
+
+/* Carrito vacío */
+body.dark-mode .vacio-texto {
+    color: #aaaaaa;
+}
+
+body.dark-mode .btn-ver-productos {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .btn-ver-productos:hover {
+    background-color: #e0e0e0;
+}
+
+/* Cada item del carrito */
+body.dark-mode .carrito-item {
+    border-color: #404040;
+    background-color: #2d2d2d;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .carrito-item:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Información del item */
+body.dark-mode .item-nombre {
+    color: #ffffff;
+}
+
+body.dark-mode .item-detalles {
+    color: #aaaaaa;
+}
+
+body.dark-mode .item-precio {
+    color: #ffffff;
+}
+
+body.dark-mode .item-subtotal {
+    color: #cccccc;
+}
+
+/* Botón eliminar */
+body.dark-mode .btn-eliminar {
+    color: #ffffff;
+}
+
+body.dark-mode .btn-eliminar:hover {
+    color: #ef4444;
+}
+
+/* Total del carrito */
+body.dark-mode .carrito-total {
+    border-top-color: #404040;
+}
+
+body.dark-mode .total-contenido {
+    color: #ffffff;
+}
+
+/* Botón vaciar carrito */
+body.dark-mode .btn-vaciar {
+    background-color: #404040;
+    color: #ffffff;
+}
+
+body.dark-mode .btn-vaciar:hover {
+    background-color: #4a4a4a;
+}
+
+/* Botón comprar */
+body.dark-mode .btn-comprar {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .btn-comprar:hover:not(.disabled) {
+    background-color: #e0e0e0;
+}
+
+/* Spinner blanco */
+body.dark-mode .spinner-blanco {
+    border-top-color: #000000;
+}
+
+/* ============================================ */
+/* ADMIN en modo oscuro                         */
+/* ============================================ */
+
+/* Contenedor principal */
+body.dark-mode .adminPage {
+    background-color: #1a1a1a;
+}
+
+/* Texto de las opciones */
+body.dark-mode .opciones p {
+    color: #ffffff;
+}
+
+body.dark-mode .opciones p:hover {
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* Avatar */
+body.dark-mode .adminAvatar {
+    filter: brightness(0.9);
+}
+
+/* Inputs de formularios admin */
+body.dark-mode .formDireccion input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #404040;
+}
+
+body.dark-mode .formDireccion input::placeholder {
+    color: #888888;
+}
+
+/* Botones de formularios admin */
+body.dark-mode .formDireccion button {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .formDireccion button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Botón cerrar sesión */
+body.dark-mode .cerrarSesion {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode .cerrarSesion:hover {
+    background-color: #e0e0e0;
+}
+
+/* Header de admin */
+body.dark-mode .headerAdmin {
+    background-color: #1a1a1a;
+}
+
+/* Botón volver admin */
+body.dark-mode .volverAdmin {
+    color: #ffffff;
+}
