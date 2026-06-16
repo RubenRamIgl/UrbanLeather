@@ -30,6 +30,42 @@ function MenuDatosUsuario() {
   const [comprasUsuario, setComprasUsuario] = useState([]);
 
   // =========================
+  // SISTEMA DE NOTIFICACIONES
+  // =========================
+  const [mensaje, setMensaje] = useState(null);
+  const [tipoMensaje, setTipoMensaje] = useState(null);
+
+  const mostrarMensaje = (texto, tipo = 'info') => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensaje(null);
+      setTipoMensaje(null);
+    }, 4000);
+  };
+
+  // =========================
+  // MODAL DE CONFIRMACIÓN
+  // =========================
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
+
+  const mostrarConfirmacion = (mensaje, accion) => {
+    setConfirmMessage(mensaje);
+    setConfirmAction(() => accion);
+    setShowConfirmModal(true);
+  };
+
+  const ejecutarConfirmacion = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setShowConfirmModal(false);
+    setConfirmAction(null);
+  };
+
+  // =========================
   // INPUT USUARIO
   // =========================
   const handleChangeUsuario = (e) => {
@@ -65,7 +101,7 @@ function MenuDatosUsuario() {
 
     } catch (error) {
       console.error("Error al obtener compras:", error);
-      alert("Error al cargar tus compras");
+      mostrarMensaje("Error al cargar tus compras", "error");
     }
   };
 
@@ -101,7 +137,7 @@ function MenuDatosUsuario() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert("Ya tienes una dirección registrada");
+      mostrarMensaje("Ya tienes una dirección registrada", "info");
 
     } catch (error) {
       if (error.response?.status === 404) {
@@ -161,7 +197,7 @@ function MenuDatosUsuario() {
 
     } catch (error) {
       if (error.response?.status === 404) {
-        alert("No tienes ninguna dirección. Debes crear una antes.");
+        mostrarMensaje("No tienes ninguna dirección. Debes crear una antes.", "info");
 
         setDireccion({
           calle: "",
@@ -191,20 +227,21 @@ function MenuDatosUsuario() {
         await api.post("/registerMiDireccion", direccion, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        alert("Dirección creada correctamente");
+        mostrarMensaje("Dirección creada correctamente", "success");
       }
 
       if (modo === "edit") {
         await api.put("/updateMiDireccion", direccion, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        alert("Dirección actualizada correctamente");
+        mostrarMensaje("Dirección actualizada correctamente", "success");
       }
 
       setModo(null);
 
     } catch (error) {
       console.log(error);
+      mostrarMensaje("Error al guardar la dirección", "error");
     }
   };
 
@@ -236,11 +273,12 @@ function MenuDatosUsuario() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert("Datos actualizados correctamente");
+      mostrarMensaje("Datos actualizados correctamente", "success");
       setModo(null);
 
     } catch (error) {
       console.log(error);
+      mostrarMensaje("Error al actualizar datos", "error");
     }
   };
 
@@ -255,13 +293,14 @@ function MenuDatosUsuario() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert("Dirección eliminada correctamente");
+      mostrarMensaje("Dirección eliminada correctamente", "success");
 
     } catch (error) {
       if (error.response?.status === 404) {
-        alert("No tienes dirección para eliminar");
+        mostrarMensaje("No tienes dirección para eliminar", "info");
       } else {
         console.log(error);
+        mostrarMensaje("Error al eliminar dirección", "error");
       }
     }
   };
@@ -269,23 +308,20 @@ function MenuDatosUsuario() {
   // =========================
   // ELIMINAR MI USUARIO - NUEVA FUNCIÓN
   // =========================
-  const handleEliminarMiUsuario = async () => {
-    // Confirmación con el usuario
-    const confirmacion = window.confirm(
+  const handleEliminarMiUsuario = () => {
+    mostrarConfirmacion(
       "¿Estás seguro de que quieres eliminar tu cuenta?\n\n" +
       "Se eliminarán TODOS tus datos:\n" +
       "• Tu perfil de usuario\n" +
       "• Tu carrito de compras\n" +
       "• Tu dirección\n" +
       "• Tu historial de compras\n\n" +
-      "Esta acción NO se puede deshacer."
+      "Esta acción NO se puede deshacer.",
+      ejecutarEliminarUsuario
     );
+  };
 
-    if (!confirmacion) {
-      console.log("Eliminación cancelada por el usuario");
-      return;
-    }
-
+  const ejecutarEliminarUsuario = async () => {
     try {
       console.log("=== INICIO ELIMINAR MI USUARIO ===");
 
@@ -293,7 +329,7 @@ function MenuDatosUsuario() {
       console.log("Token existe:", token ? "SI" : "NO");
 
       if (!token) {
-        alert("No estás autenticado. Inicia sesión nuevamente.");
+        mostrarMensaje("No estás autenticado. Inicia sesión nuevamente.", "error");
         return;
       }
 
@@ -306,15 +342,39 @@ function MenuDatosUsuario() {
       console.log("Username a eliminar:", username);
 
       // Segunda confirmación con el nombre de usuario
-      const confirmacionFinal = window.confirm(
+      mostrarConfirmacion(
         `¿Estás seguro de eliminar la cuenta de "${username}"?\n\n` +
-        `Todos tus datos serán eliminados permanentemente.`
+        `Todos tus datos serán eliminados permanentemente.`,
+        ejecutarEliminacionFinal
       );
 
-      if (!confirmacionFinal) {
-        console.log("Eliminación cancelada en confirmación final");
-        return;
+    } catch (error) {
+      console.log("=== ERROR AL ELIMINAR USUARIO ===");
+
+      if (error.response) {
+        console.log("Status:", error.response.status);
+        console.log("Data:", error.response.data);
+
+        if (error.response.status === 500) {
+          mostrarMensaje("Error al eliminar la cuenta. Por favor, intenta más tarde.", "error");
+        } else if (error.response.status === 404) {
+          mostrarMensaje("Usuario no encontrado", "error");
+        } else {
+          mostrarMensaje(`Error: ${error.response.data || 'Error desconocido'}`, "error");
+        }
+      } else if (error.request) {
+        console.log("No se recibió respuesta del servidor");
+        mostrarMensaje("Error de conexión. Verifica tu red.", "error");
+      } else {
+        console.log("Error:", error.message);
+        mostrarMensaje(`Error: ${error.message}`, "error");
       }
+    }
+  };
+
+  const ejecutarEliminacionFinal = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
       console.log("Enviando petición DELETE a /borrarMiCuenta...");
 
@@ -330,14 +390,15 @@ function MenuDatosUsuario() {
       console.log("Status:", response.status);
       console.log("Data:", response.data);
 
-      alert("Tu cuenta ha sido eliminada correctamente");
+      mostrarMensaje("Tu cuenta ha sido eliminada correctamente", "success");
 
       // Limpiar localStorage y redirigir al login
-      localStorage.removeItem("token");
-      localStorage.removeItem("isLogged");
-      localStorage.removeItem("role");
-
-      navigate("/login");
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("isLogged");
+        localStorage.removeItem("role");
+        navigate("/login");
+      }, 1500);
 
       console.log("=== USUARIO ELIMINADO CORRECTAMENTE ===");
 
@@ -349,18 +410,18 @@ function MenuDatosUsuario() {
         console.log("Data:", error.response.data);
 
         if (error.response.status === 500) {
-          alert("Error al eliminar la cuenta. Por favor, intenta más tarde.");
+          mostrarMensaje("Error al eliminar la cuenta. Por favor, intenta más tarde.", "error");
         } else if (error.response.status === 404) {
-          alert("Usuario no encontrado");
+          mostrarMensaje("Usuario no encontrado", "error");
         } else {
-          alert(`Error: ${error.response.data || 'Error desconocido'}`);
+          mostrarMensaje(`Error: ${error.response.data || 'Error desconocido'}`, "error");
         }
       } else if (error.request) {
         console.log("No se recibió respuesta del servidor");
-        alert("Error de conexión. Verifica tu red.");
+        mostrarMensaje("Error de conexión. Verifica tu red.", "error");
       } else {
         console.log("Error:", error.message);
-        alert(`Error: ${error.message}`);
+        mostrarMensaje(`Error: ${error.message}`, "error");
       }
     }
   };
@@ -378,6 +439,41 @@ function MenuDatosUsuario() {
 
   return (
     <div className="usuarioPage">
+
+      {/* ========================= */}
+      {/* SISTEMA DE NOTIFICACIONES */}
+      {/* ========================= */}
+      {mensaje && (
+        <div className={`mensaje-notificacion ${tipoMensaje}`}>
+          {mensaje}
+        </div>
+      )}
+
+      {/* ========================= */}
+      {/* MODAL DE CONFIRMACIÓN */}
+      {/* ========================= */}
+      {showConfirmModal && (
+        <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Confirmar acción</h3>
+            <p style={{ whiteSpace: 'pre-line' }}>{confirmMessage}</p>
+            <div className="modal-buttons">
+              <button
+                className="modal-btn-cancelar"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="modal-btn-confirmar"
+                onClick={ejecutarConfirmacion}
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* AVATAR */}
       <div className="usuarioHeaderCenter">
