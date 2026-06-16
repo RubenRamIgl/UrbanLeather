@@ -19,6 +19,21 @@ function Registro() {
     repetirPassword: "",
   });
 
+  // =========================
+  // SISTEMA DE NOTIFICACIONES
+  // =========================
+  const [mensaje, setMensaje] = useState(null);
+  const [tipoMensaje, setTipoMensaje] = useState(null);
+
+  const mostrarMensaje = (texto, tipo = 'info') => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensaje(null);
+      setTipoMensaje(null);
+    }, 4000);
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -33,24 +48,36 @@ function Registro() {
 
       const response = await api.post("/register", formData);
 
-      alert(response.data);
+      mostrarMensaje(response.data, "success");
 
-      navigate("/login");
+      // Esperar 1.5 segundos para que se vea la notificación antes de redirigir
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
 
     } catch (error) {
 
       console.log(error);
 
       if (error.response) {
-        alert(error.response.data.message);
+        mostrarMensaje(error.response.data.message, "error");
       } else {
-        alert("Error al conectar con el servidor");
+        mostrarMensaje("Error al conectar con el servidor", "error");
       }
     }
   };
 
   return (
     <form className="formulario" onSubmit={handleRegister}>
+
+      {/* ========================= */}
+      {/* SISTEMA DE NOTIFICACIONES */}
+      {/* ========================= */}
+      {mensaje && (
+        <div className={`mensaje-notificacion ${tipoMensaje}`}>
+          {mensaje}
+        </div>
+      )}
 
       {/* Header registro */}
       <div className="headerRegistro">
