@@ -7,6 +7,7 @@ function Carrito() {
   const [carrito, setCarrito] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = cargando
   const [cargandoCompra, setCargandoCompra] = useState(false); // Estado para carga de compra
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // Modal de confirmación
   const navigate = useNavigate();
 
   // =========================
@@ -59,17 +60,21 @@ function Carrito() {
     }
   };
 
-  const vaciarCarrito = async () => {
-    if (window.confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
-      try {
-        await api.delete("/carrito/vaciar");
-        setCarrito({ items: [], total: 0 }); // Resetear carrito localmente
-        mostrarMensaje("Carrito vaciado correctamente", "success");
-      } catch (error) {
-        console.log("Error al vaciar carrito:", error);
-        mostrarMensaje("No se pudo vaciar el carrito", "error");
-      }
+  // Función para confirmar y vaciar carrito
+  const confirmarVaciarCarrito = async () => {
+    setShowConfirmModal(false); // Cerrar modal
+    try {
+      await api.delete("/carrito/vaciar");
+      setCarrito({ items: [], total: 0 }); // Resetear carrito localmente
+      mostrarMensaje("Carrito vaciado correctamente", "success");
+    } catch (error) {
+      console.log("Error al vaciar carrito:", error);
+      mostrarMensaje("No se pudo vaciar el carrito", "error");
     }
+  };
+
+  const vaciarCarrito = () => {
+    setShowConfirmModal(true); // Mostrar modal de confirmación
   };
 
   const realizarCompra = async () => {
@@ -154,6 +159,32 @@ function Carrito() {
       {mensaje && (
         <div className={`mensaje-notificacion ${tipoMensaje}`}>
           {mensaje}
+        </div>
+      )}
+
+      {/* ========================= */}
+      {/* MODAL DE CONFIRMACIÓN */}
+      {/* ========================= */}
+      {showConfirmModal && (
+        <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>¿Estás seguro?</h3>
+            <p>¿Quieres vaciar el carrito completamente?</p>
+            <div className="modal-buttons">
+              <button
+                className="modal-btn-cancelar"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="modal-btn-confirmar"
+                onClick={confirmarVaciarCarrito}
+              >
+                Sí, vaciar carrito
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
