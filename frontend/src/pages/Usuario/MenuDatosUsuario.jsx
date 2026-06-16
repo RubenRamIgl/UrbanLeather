@@ -267,6 +267,105 @@ function MenuDatosUsuario() {
   };
 
   // =========================
+  // ELIMINAR MI USUARIO - NUEVA FUNCIÓN
+  // =========================
+  const handleEliminarMiUsuario = async () => {
+    // Confirmación con el usuario
+    const confirmacion = window.confirm(
+      "¿Estás seguro de que quieres eliminar tu cuenta?\n\n" +
+      "Se eliminarán TODOS tus datos:\n" +
+      "• Tu perfil de usuario\n" +
+      "• Tu carrito de compras\n" +
+      "• Tu dirección\n" +
+      "• Tu historial de compras\n\n" +
+      "Esta acción NO se puede deshacer."
+    );
+
+    if (!confirmacion) {
+      console.log("Eliminación cancelada por el usuario");
+      return;
+    }
+
+    try {
+      console.log("=== INICIO ELIMINAR MI USUARIO ===");
+
+      const token = localStorage.getItem("token");
+      console.log("Token existe:", token ? "SI" : "NO");
+
+      if (!token) {
+        alert("No estás autenticado. Inicia sesión nuevamente.");
+        return;
+      }
+
+      // Obtener el username del usuario actual
+      const perfilRes = await api.get("/miPerfil", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const username = perfilRes.data.username;
+      console.log("Username a eliminar:", username);
+
+      // Segunda confirmación con el nombre de usuario
+      const confirmacionFinal = window.confirm(
+        `¿Estás seguro de eliminar la cuenta de "${username}"?\n\n` +
+        `Todos tus datos serán eliminados permanentemente.`
+      );
+
+      if (!confirmacionFinal) {
+        console.log("Eliminación cancelada en confirmación final");
+        return;
+      }
+
+      console.log("Enviando petición DELETE a /borrarMiCuenta...");
+
+      // Llamar al endpoint para eliminar la cuenta
+      const response = await api.delete("/borrarMiCuenta", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log("RESPUESTA DEL SERVIDOR:");
+      console.log("Status:", response.status);
+      console.log("Data:", response.data);
+
+      alert("Tu cuenta ha sido eliminada correctamente");
+
+      // Limpiar localStorage y redirigir al login
+      localStorage.removeItem("token");
+      localStorage.removeItem("isLogged");
+      localStorage.removeItem("role");
+
+      navigate("/login");
+
+      console.log("=== USUARIO ELIMINADO CORRECTAMENTE ===");
+
+    } catch (error) {
+      console.log("=== ERROR AL ELIMINAR USUARIO ===");
+
+      if (error.response) {
+        console.log("Status:", error.response.status);
+        console.log("Data:", error.response.data);
+
+        if (error.response.status === 500) {
+          alert("Error al eliminar la cuenta. Por favor, intenta más tarde.");
+        } else if (error.response.status === 404) {
+          alert("Usuario no encontrado");
+        } else {
+          alert(`Error: ${error.response.data || 'Error desconocido'}`);
+        }
+      } else if (error.request) {
+        console.log("No se recibió respuesta del servidor");
+        alert("Error de conexión. Verifica tu red.");
+      } else {
+        console.log("Error:", error.message);
+        alert(`Error: ${error.message}`);
+      }
+    }
+  };
+
+  // =========================
   // LOGOUT
   // =========================
   const handleLogout = () => {
@@ -312,7 +411,8 @@ function MenuDatosUsuario() {
           Ver mis compras
         </p>
 
-        <p>
+        {/* ELIMINAR MI USUARIO - AHORA FUNCIONAL */}
+        <p onClick={handleEliminarMiUsuario} className="eliminar-cuenta">
           Eliminar mi usuario
         </p>
 
