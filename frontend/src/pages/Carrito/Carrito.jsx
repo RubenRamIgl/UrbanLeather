@@ -80,19 +80,22 @@ function Carrito() {
       const response = await api.post("/compra/checkout");
       console.log("Compra realizada:", response.data);
 
-      // Mostrar mensaje de éxito antes de redirigir
+      // Mostrar mensaje de éxito
       mostrarMensaje("✅ ¡Compra realizada con éxito!", "success");
 
-      // Redirigir a la página de confirmación con los datos de la compra
-      navigate("/compra/confirmacion", {
-        state: { compra: response.data }
-      });
+      // Esperar 1.5 segundos para que se vea la notificación antes de redirigir
+      setTimeout(() => {
+        // Redirigir a la página de confirmación con los datos de la compra
+        navigate("/compra/confirmacion", {
+          state: { compra: response.data }
+        });
+      }, 1500);
 
     } catch (error) {
       console.error("Error al realizar la compra:", error);
       const mensaje = error.response?.data || "Error al procesar la compra";
       mostrarMensaje(mensaje, "error");
-      setCargandoCompra(false); // Solo resetear si hay error, si hay éxito redirige
+      setCargandoCompra(false);
     }
   };
 
