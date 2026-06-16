@@ -1,4 +1,4 @@
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -7,13 +7,13 @@ import './styles/darkmode.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Header />
 
       <AppRoutes />
 
       <Footer />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
