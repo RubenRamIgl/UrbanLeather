@@ -15,6 +15,21 @@ function InicioSesion() {
     password: ""
   });
 
+  // =========================
+  // SISTEMA DE NOTIFICACIONES
+  // =========================
+  const [mensaje, setMensaje] = useState(null);
+  const [tipoMensaje, setTipoMensaje] = useState(null); // 'success', 'error', 'info'
+
+  const mostrarMensaje = (texto, tipo = 'info') => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensaje(null);
+      setTipoMensaje(null);
+    }, 4000);
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -53,13 +68,22 @@ function InicioSesion() {
 
       console.log(error);
 
-      alert("Usuario o contraseña incorrectos");
+      mostrarMensaje("Usuario o contraseña incorrectos", "error");
     }
   };
 
   return (
 
     <form className="formulario" onSubmit={handleLogin}>
+
+      {/* ========================= */}
+      {/* SISTEMA DE NOTIFICACIONES */}
+      {/* ========================= */}
+      {mensaje && (
+        <div className={`mensaje-notificacion ${tipoMensaje}`}>
+          {mensaje}
+        </div>
+      )}
 
       <div className="headerSesion">
 
