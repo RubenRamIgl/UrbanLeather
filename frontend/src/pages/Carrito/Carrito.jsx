@@ -9,6 +9,21 @@ function Carrito() {
   const [cargandoCompra, setCargandoCompra] = useState(false); // Estado para carga de compra
   const navigate = useNavigate();
 
+  // =========================
+  // SISTEMA DE NOTIFICACIONES
+  // =========================
+  const [mensaje, setMensaje] = useState(null);
+  const [tipoMensaje, setTipoMensaje] = useState(null);
+
+  const mostrarMensaje = (texto, tipo = 'info') => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensaje(null);
+      setTipoMensaje(null);
+    }, 4000);
+  };
+
   const fetchCarrito = async () => {
     try {
       const res = await api.get("/carrito");
@@ -37,9 +52,10 @@ function Carrito() {
     try {
       await api.delete(`/carrito/item/${id}`);
       fetchCarrito(); // Recargar carrito después de eliminar
+      mostrarMensaje("Producto eliminado del carrito", "success");
     } catch (error) {
       console.log("Error al eliminar item:", error);
-      alert("No se pudo eliminar el producto");
+      mostrarMensaje("No se pudo eliminar el producto", "error");
     }
   };
 
@@ -48,9 +64,10 @@ function Carrito() {
       try {
         await api.delete("/carrito/vaciar");
         setCarrito({ items: [], total: 0 }); // Resetear carrito localmente
+        mostrarMensaje("Carrito vaciado correctamente", "success");
       } catch (error) {
         console.log("Error al vaciar carrito:", error);
-        alert("No se pudo vaciar el carrito");
+        mostrarMensaje("No se pudo vaciar el carrito", "error");
       }
     }
   };
@@ -64,7 +81,7 @@ function Carrito() {
       console.log("Compra realizada:", response.data);
 
       // Mostrar mensaje de éxito antes de redirigir
-      alert("✅ ¡Compra realizada con éxito!");
+      mostrarMensaje("✅ ¡Compra realizada con éxito!", "success");
 
       // Redirigir a la página de confirmación con los datos de la compra
       navigate("/compra/confirmacion", {
@@ -74,7 +91,7 @@ function Carrito() {
     } catch (error) {
       console.error("Error al realizar la compra:", error);
       const mensaje = error.response?.data || "Error al procesar la compra";
-      alert(mensaje);
+      mostrarMensaje(mensaje, "error");
       setCargandoCompra(false); // Solo resetear si hay error, si hay éxito redirige
     }
   };
@@ -82,6 +99,14 @@ function Carrito() {
   if (isAuthenticated === false) {
     return (
       <div className="carrito-container">
+        {/* ========================= */}
+        {/* SISTEMA DE NOTIFICACIONES */}
+        {/* ========================= */}
+        {mensaje && (
+          <div className={`mensaje-notificacion ${tipoMensaje}`}>
+            {mensaje}
+          </div>
+        )}
         <div className="carrito-acceso">
           <h2 className="carrito-titulo">Acceso para clientes</h2>
           <p className="carrito-mensaje">
@@ -102,6 +127,14 @@ function Carrito() {
   if (isAuthenticated === null || !carrito) {
     return (
       <div className="carrito-container">
+        {/* ========================= */}
+        {/* SISTEMA DE NOTIFICACIONES */}
+        {/* ========================= */}
+        {mensaje && (
+          <div className={`mensaje-notificacion ${tipoMensaje}`}>
+            {mensaje}
+          </div>
+        )}
         <div className="carrito-cargando">
           <div className="spinner"></div>
           <p className="cargando-texto">Cargando carrito...</p>
@@ -112,6 +145,15 @@ function Carrito() {
 
   return (
     <div className="carrito-container">
+      {/* ========================= */}
+      {/* SISTEMA DE NOTIFICACIONES */}
+      {/* ========================= */}
+      {mensaje && (
+        <div className={`mensaje-notificacion ${tipoMensaje}`}>
+          {mensaje}
+        </div>
+      )}
+
       <h2 className="carrito-titulo-principal">
         Tu carrito
       </h2>
