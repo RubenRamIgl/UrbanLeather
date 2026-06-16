@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # BASE DE DATOS (MySQL)
+  # ============================================
+  database:
+    image: mysql:8
+    container_name: mi-database
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-railway}
+      # Eliminadas MYSQL_USER y MYSQL_PASSWORD (no se usan para root)
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-PqjbvpnkbsnmjTnRtAtgDOLFAOeulXJo}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-PqjbvpnkbsnmjTnRtAtgDOLFAOeulXJo}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # BACKEND (Spring Boot)
+  # ============================================
+  backend:
+    build: ./backend
+    container_name: mi-backend
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      # Configuración de base de datos
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/${DB_NAME:-railway}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-PqjbvpnkbsnmjTnRtAtgDOLFAOeulXJo}
+
+      # Configuración JPA
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_SHOW_SQL: "true"
+
+      # Puerto del servidor
+      SERVER_PORT: 8081
+
+      # Logs
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY_OAUTH2_JWT: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: DEBUG
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+
+  # ============================================
+  # FRONTEND (React)
+  # ============================================
+  frontend:
+    build: ./frontend
+    container_name: mi-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+# ============================================
+# VOLÚMENES (persistencia de datos)
+# ============================================
+volumes:
+  mysql_data:
+
+# ============================================
+# REDES
+# ============================================
+networks:
+  app-network:
+    driver: bridge

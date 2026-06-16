@@ -60,6 +60,21 @@ function MenuDatosAdmin() {
   const [showComprasUsuario, setShowComprasUsuario] = useState(false);
   const [cargandoCompras, setCargandoCompras] = useState(false);
 
+  // =========================
+  // SISTEMA DE NOTIFICACIONES
+  // =========================
+  const [mensaje, setMensaje] = useState(null);
+  const [tipoMensaje, setTipoMensaje] = useState(null); // 'success', 'error', 'info'
+
+  const mostrarMensaje = (texto, tipo = 'info') => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensaje(null);
+      setTipoMensaje(null);
+    }, 4000);
+  };
+
   const resetVistas = () => {
     setShowProducto(false);
     setShowBuscarProducto(false);
@@ -123,7 +138,7 @@ function MenuDatosAdmin() {
       );
 
       if (!producto) {
-        alert("Producto no encontrado");
+        mostrarMensaje("Producto no encontrado", "error");
         return;
       }
 
@@ -134,7 +149,7 @@ function MenuDatosAdmin() {
       }
     } catch (error) {
       console.log(error);
-      alert("Error buscando producto");
+      mostrarMensaje("Error buscando producto", "error");
     }
   };
 
@@ -165,7 +180,7 @@ function MenuDatosAdmin() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert("Producto creado correctamente");
+      mostrarMensaje("Producto creado correctamente", "success");
       setShowProducto(false);
       setProducto({
         nombre: "",
@@ -177,7 +192,7 @@ function MenuDatosAdmin() {
       setImagenFile(null);
     } catch (err) {
       console.log(err);
-      alert("Error al crear producto");
+      mostrarMensaje("Error al crear producto", "error");
     }
   };
 
@@ -227,7 +242,7 @@ function MenuDatosAdmin() {
   const handleBuscarUsuario = async () => {
     try {
       if (!searchUsername.trim()) {
-        alert("Introduce un username");
+        mostrarMensaje("Introduce un username", "error");
         return;
       }
 
@@ -237,7 +252,7 @@ function MenuDatosAdmin() {
         await api.delete(`/usuarioDelete/${searchUsername}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        alert("Usuario eliminado correctamente");
+        mostrarMensaje("Usuario eliminado correctamente", "success");
         setShowBuscarUsuario(false);
         setModoUsuario(null);
         return;
@@ -266,7 +281,7 @@ function MenuDatosAdmin() {
         setDireccion(null);
       }
     } catch (error) {
-      alert("Usuario no encontrado");
+      mostrarMensaje("Usuario no encontrado", "error");
       console.log(error);
     }
   };
@@ -278,11 +293,11 @@ function MenuDatosAdmin() {
       await api.put("/usuarioUpdate", usuario, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert("Usuario actualizado correctamente");
+      mostrarMensaje("Usuario actualizado correctamente", "success");
       setModoUsuario(null);
     } catch (error) {
       console.log(error);
-      alert("Error al actualizar usuario");
+      mostrarMensaje("Error al actualizar usuario", "error");
     }
   };
 
@@ -293,7 +308,7 @@ function MenuDatosAdmin() {
         p => p.nombre.toLowerCase() === searchStockProducto.toLowerCase()
       );
       if (!prod) {
-        alert("Producto no encontrado");
+        mostrarMensaje("Producto no encontrado", "error");
         return;
       }
       setProductoStock(prod);
@@ -319,7 +334,7 @@ function MenuDatosAdmin() {
   const buscarComprasUsuario = async () => {
     try {
       if (!searchUsername.trim()) {
-        alert("Introduce un username");
+        mostrarMensaje("Introduce un username", "error");
         return;
       }
 
@@ -335,15 +350,15 @@ function MenuDatosAdmin() {
       if (Array.isArray(res.data)) {
         setComprasUsuario(res.data);
         if (res.data.length === 0) {
-          alert("Este usuario no tiene compras registradas");
+          mostrarMensaje("Este usuario no tiene compras registradas", "info");
         }
       } else {
         setComprasUsuario([]);
-        alert("Formato de datos incorrecto");
+        mostrarMensaje("Formato de datos incorrecto", "error");
       }
     } catch (error) {
       console.error("Error al buscar compras:", error);
-      alert("Error al buscar compras del usuario");
+      mostrarMensaje("Error al buscar compras del usuario", "error");
       setComprasUsuario([]);
     } finally {
       setCargandoCompras(false);
@@ -382,6 +397,15 @@ function MenuDatosAdmin() {
 
   return (
     <div className="adminPage">
+      {/* ========================= */}
+      {/* SISTEMA DE NOTIFICACIONES */}
+      {/* ========================= */}
+      {mensaje && (
+        <div className={`mensaje-notificacion ${tipoMensaje}`}>
+          {mensaje}
+        </div>
+      )}
+
       <div className="adminHeaderCenter">
         <img src={userIcon} alt="Admin" className="adminAvatar" />
       </div>
@@ -608,7 +632,7 @@ function MenuDatosAdmin() {
                   ...productoEditando,
                   imagen_url: imageUrl
                 }, { headers: { Authorization: `Bearer ${token}` } });
-                alert("Producto actualizado");
+                mostrarMensaje("Producto actualizado", "success");
                 setShowModificarProducto(false);
                 setProductoEditando(null);
               }}>Guardar cambios</button>
