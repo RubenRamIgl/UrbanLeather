@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,18 +17,15 @@ import java.util.Map;
 @RequestMapping("/files")
 public class FileController {
 
-
     // RUTA SEGURA
     private static final Path UPLOAD_DIR =
             Paths.get("uploads").toAbsolutePath();
-
 
     // SUBIR IMAGEN
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
 
         try {
-
             System.out.println("📥 Recibiendo archivo...");
 
             if (file.isEmpty()) {
@@ -52,27 +48,22 @@ public class FileController {
 
             System.out.println("Imagen guardada correctamente");
 
-            // String url = "http://localhost:8081/files/" + fileName;
-            String url = ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/files/")
-                    .path(fileName)
-                    .toUriString();
+            // ==========================================
+            // FORZAR HTTPS EN LA URL
+            // ==========================================
+            String url = "https://urbanleather-production.up.railway.app/files/" + fileName;
 
             System.out.println("URL generada: " + url);
 
             return ResponseEntity.ok(url);
 
         } catch (Exception e) {
-
             System.out.println("ERROR subiendo imagen:");
             e.printStackTrace();
-
             return ResponseEntity.status(500)
                     .body("Error subiendo imagen: " + e.getMessage());
         }
     }
-
 
     // OBTENER IMAGEN
     @GetMapping("/{filename}")
@@ -94,21 +85,16 @@ public class FileController {
                 .body(resource);
     }
 
-
     // BORRAR IMAGEN
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteImage(@RequestBody Map<String, String> body) {
 
         try {
-
             String url = body.get("url");
-
             System.out.println("Intentando borrar: " + url);
-
 
             // EXTRAER SOLO EL NOMBRE DEL ARCHIVO
             String fileName = url.substring(url.lastIndexOf("/") + 1);
-
             Path filePath = UPLOAD_DIR.resolve(fileName);
 
             if (Files.exists(filePath)) {

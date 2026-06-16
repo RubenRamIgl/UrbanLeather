@@ -92,8 +92,8 @@ public class SecurityConfig {
 
 
                         // PRODUCTOS
-                        .requestMatchers(HttpMethod.GET, "/productos").permitAll()
                         .requestMatchers(HttpMethod.GET, "/productos/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/productos").permitAll()
                         .requestMatchers(HttpMethod.POST, "/productoRegister").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/productoUpdate/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/productoDelete/**").hasRole("ADMIN")
