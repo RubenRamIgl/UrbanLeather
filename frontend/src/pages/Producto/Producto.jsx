@@ -13,6 +13,21 @@ function Producto() {
   const [mensajeCarrito, setMensajeCarrito] = useState("");
 
   // =========================
+  // SISTEMA DE NOTIFICACIONES
+  // =========================
+  const [mensaje, setMensaje] = useState(null);
+  const [tipoMensaje, setTipoMensaje] = useState(null);
+
+  const mostrarMensaje = (texto, tipo = 'info') => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensaje(null);
+      setTipoMensaje(null);
+    }, 4000);
+  };
+
+  // =========================
   // CARGAR PRODUCTO
   // =========================
   useEffect(() => {
@@ -45,13 +60,6 @@ function Producto() {
       return;
     }
 
-    setMensajeCarrito("Producto añadido al carrito");
-
-    // ocultar mensaje después de 3 segundos
-    setTimeout(() => {
-      setMensajeCarrito("");
-    }, 3000);
-
     try {
       await api.post("/carrito/item/add", null, {
         params: {
@@ -61,10 +69,11 @@ function Producto() {
         }
       });
 
-      alert("Producto añadido al carrito");
+      mostrarMensaje("Producto añadido al carrito", "success");
 
     } catch (error) {
       console.log("Error carrito:", error);
+      mostrarMensaje("Error al añadir al carrito", "error");
     }
   };
 
@@ -72,6 +81,15 @@ function Producto() {
 
   return (
     <div className="producto-container">
+
+      {/* ========================= */}
+      {/* SISTEMA DE NOTIFICACIONES */}
+      {/* ========================= */}
+      {mensaje && (
+        <div className={`mensaje-notificacion ${tipoMensaje}`}>
+          {mensaje}
+        </div>
+      )}
 
       {/* IMAGEN */}
       <img
