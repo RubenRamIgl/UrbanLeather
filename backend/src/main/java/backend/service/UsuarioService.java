@@ -141,12 +141,12 @@ public class UsuarioService implements UserDetailsService {
 
     /**
      * Elimina completamente un usuario y todas sus relaciones en el orden correcto:
-     * 1. DetalleCompra (detalles de compras)
-     * 2. Compra (compras)
-     * 3. CarritoItem (items del carrito)
-     * 4. Carrito (carrito)
-     * 5. Direccion (dirección)
-     * 6. Usuario (usuario)
+     * 1. CarritoItem (items del carrito) - HIJO DE CARRITO
+     * 2. Carrito (carrito) - HIJO DE USUARIO
+     * 3. DetalleCompra (detalles de compras) - HIJO DE COMPRA
+     * 4. Compra (compras) - HIJO DE USUARIO
+     * 5. Direccion (dirección) - HIJO DE USUARIO
+     * 6. Usuario (usuario) - PADRE
      *
      * @param username usuario a eliminar
      * @return true si se eliminó correctamente
@@ -164,47 +164,57 @@ public class UsuarioService implements UserDetailsService {
         Long usuarioId = usuario.getId();
         logger.info("Usuario encontrado con ID: {}", usuarioId);
 
-        try {
-            logger.info("Eliminando detalles de compra para usuario ID: {}", usuarioId);
-            detalleCompraRepository.deleteByUsuarioId(usuarioId);
-            logger.info("Detalles de compra eliminados");
-        } catch (Exception e) {
-            logger.warn("No se encontraron detalles de compra o ya estaban eliminados: {}", e.getMessage());
-        }
+        // ==========================================
+        // ORDEN DE ELIMINACIÓN CORRECTO (DE HIJO A PADRE)
+        // ==========================================
 
+        // 1. PRIMERO: Eliminar items del carrito (CarritoItem)
         try {
-            logger.info("Eliminando compras para usuario ID: {}", usuarioId);
-            compraRepository.deleteByUsuarioId(usuarioId);
-            logger.info("Compras eliminadas");
-        } catch (Exception e) {
-            logger.warn("No se encontraron compras o ya estaban eliminadas: {}", e.getMessage());
-        }
-
-        try {
-            logger.info("Eliminando items del carrito para usuario ID: {}", usuarioId);
+            logger.info("1. Eliminando items del carrito para usuario ID: {}", usuarioId);
             carritoItemRepository.deleteByUsuarioId(usuarioId);
             logger.info("Items del carrito eliminados");
         } catch (Exception e) {
             logger.warn("No se encontraron items de carrito o ya estaban eliminados: {}", e.getMessage());
         }
 
+        // 2. SEGUNDO: Eliminar el carrito (Carrito)
         try {
-            logger.info("Eliminando carrito para usuario ID: {}", usuarioId);
+            logger.info("2. Eliminando carrito para usuario ID: {}", usuarioId);
             carritoRepository.deleteByUsuarioId(usuarioId);
             logger.info("Carrito eliminado");
         } catch (Exception e) {
             logger.warn("No se encontró carrito o ya estaba eliminado: {}", e.getMessage());
         }
 
+        // 3. TERCERO: Eliminar detalles de compra (DetalleCompra)
         try {
-            logger.info("Eliminando direccion para usuario ID: {}", usuarioId);
+            logger.info("3. Eliminando detalles de compra para usuario ID: {}", usuarioId);
+            detalleCompraRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Detalles de compra eliminados");
+        } catch (Exception e) {
+            logger.warn("No se encontraron detalles de compra o ya estaban eliminados: {}", e.getMessage());
+        }
+
+        // 4. CUARTO: Eliminar compras (Compra)
+        try {
+            logger.info("4. Eliminando compras para usuario ID: {}", usuarioId);
+            compraRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Compras eliminadas");
+        } catch (Exception e) {
+            logger.warn("No se encontraron compras o ya estaban eliminadas: {}", e.getMessage());
+        }
+
+        // 5. QUINTO: Eliminar dirección (Direccion)
+        try {
+            logger.info("5. Eliminando direccion para usuario ID: {}", usuarioId);
             direccionRepository.deleteByUsuarioId(usuarioId);
             logger.info("Direccion eliminada");
         } catch (Exception e) {
             logger.warn("No se encontró dirección o ya estaba eliminada: {}", e.getMessage());
         }
 
-        logger.info("Eliminando usuario con ID: {}", usuarioId);
+        // 6. FINALMENTE: Eliminar el usuario (Usuario)
+        logger.info("6. Eliminando usuario con ID: {}", usuarioId);
         usuarioRepository.delete(usuario);
 
         logger.info("=== USUARIO Y TODOS SUS DATOS ELIMINADOS CORRECTAMENTE ===");
