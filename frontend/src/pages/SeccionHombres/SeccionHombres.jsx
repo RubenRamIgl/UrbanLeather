@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import heart from "../../assets/images/heart.svg";
-
 function SeccionHombres() {
 
   const [productos, setProductos] = useState([]);
@@ -135,12 +133,6 @@ function SeccionHombres() {
                 <p className="chaqueta-price">
                   {item.precio}€
                 </p>
-
-                <img
-                  src={heart}
-                  alt="favorito"
-                  className="chaqueta-heart"
-                />
 
               </div>
 

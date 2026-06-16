@@ -1,12 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 import logo from "../../assets/images/Logo.png";
 import user from "../../assets/images/user.svg";
 import userCheck from "../../assets/images/user-check.svg";
 import bag from "../../assets/images/shopping-bag.svg";
-import heart from "../../assets/images/heart.svg";
-import menu from "../../assets/images/align-right.svg";
 import arrow from "../../assets/images/arrow-left.svg";
 import filterIcon from "../../assets/images/settings.svg";
 import "./Header.css";
@@ -127,10 +125,7 @@ function Header() {
         />
 
         {isHome && (
-          <>
-            <img src={heart} alt="heart" className="header-icono" />
-            <img src={menu} alt="menu" className="header-icono" />
-          </>
+          <img src={menu} alt="menu" className="header-icono" />
         )}
 
       </div>
