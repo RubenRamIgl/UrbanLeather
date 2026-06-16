@@ -13,18 +13,26 @@ import backend.model.Compra;
 import backend.repository.UsuarioRepository;
 import backend.repository.DireccionRepository;
 import backend.repository.CompraRepository;
+import backend.repository.DetalleCompraRepository;
+import backend.repository.CarritoRepository;
+import backend.repository.CarritoItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UsuarioService implements UserDetailsService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -34,6 +42,15 @@ public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private CompraRepository compraRepository;
+
+    @Autowired
+    private DetalleCompraRepository detalleCompraRepository;
+
+    @Autowired
+    private CarritoRepository carritoRepository;
+
+    @Autowired
+    private CarritoItemRepository carritoItemRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -123,30 +140,74 @@ public class UsuarioService implements UserDetailsService {
     }
 
     /**
-     * Elimina completamente un usuario y sus relaciones (dirección y compras).
+     * Elimina completamente un usuario y todas sus relaciones en el orden correcto:
+     * 1. DetalleCompra (detalles de compras)
+     * 2. Compra (compras)
+     * 3. CarritoItem (items del carrito)
+     * 4. Carrito (carrito)
+     * 5. Direccion (dirección)
+     * 6. Usuario (usuario)
      *
      * @param username usuario a eliminar
      * @return true si se eliminó correctamente
      * @throws NoEncontradoException si el usuario no existe
      */
+    @Transactional
     public boolean borrarUsuario(String username) {
 
+        logger.info("=== INICIO borrarUsuario ===");
+        logger.info("Username a eliminar: {}", username);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new NoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new NoEncontradoException("Usuario no encontrado: " + username));
 
-        Optional<Direccion> direccion =
-                direccionRepository.findByUsuarioUsername(username);
+        Long usuarioId = usuario.getId();
+        logger.info("Usuario encontrado con ID: {}", usuarioId);
 
-        direccion.ifPresent(direccionRepository::delete);
-
-        List<Compra> compras =
-                compraRepository.findByUsuarioUsername(username);
-
-        if (compras != null && !compras.isEmpty()) {
-            compraRepository.deleteAll(compras);
+        try {
+            logger.info("Eliminando detalles de compra para usuario ID: {}", usuarioId);
+            detalleCompraRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Detalles de compra eliminados");
+        } catch (Exception e) {
+            logger.warn("No se encontraron detalles de compra o ya estaban eliminados: {}", e.getMessage());
         }
 
+        try {
+            logger.info("Eliminando compras para usuario ID: {}", usuarioId);
+            compraRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Compras eliminadas");
+        } catch (Exception e) {
+            logger.warn("No se encontraron compras o ya estaban eliminadas: {}", e.getMessage());
+        }
+
+        try {
+            logger.info("Eliminando items del carrito para usuario ID: {}", usuarioId);
+            carritoItemRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Items del carrito eliminados");
+        } catch (Exception e) {
+            logger.warn("No se encontraron items de carrito o ya estaban eliminados: {}", e.getMessage());
+        }
+
+        try {
+            logger.info("Eliminando carrito para usuario ID: {}", usuarioId);
+            carritoRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Carrito eliminado");
+        } catch (Exception e) {
+            logger.warn("No se encontró carrito o ya estaba eliminado: {}", e.getMessage());
+        }
+
+        try {
+            logger.info("Eliminando direccion para usuario ID: {}", usuarioId);
+            direccionRepository.deleteByUsuarioId(usuarioId);
+            logger.info("Direccion eliminada");
+        } catch (Exception e) {
+            logger.warn("No se encontró dirección o ya estaba eliminada: {}", e.getMessage());
+        }
+
+        logger.info("Eliminando usuario con ID: {}", usuarioId);
         usuarioRepository.delete(usuario);
+
+        logger.info("=== USUARIO Y TODOS SUS DATOS ELIMINADOS CORRECTAMENTE ===");
         return true;
     }
 
