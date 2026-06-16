@@ -2,7 +2,7 @@ import "./Registro.css";
 import arrow from "../../assets/images/arrow-left-circle.svg";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import api from "../../api/axios";
 
@@ -86,10 +86,10 @@ function Registro() {
           Regístrate
         </p>
 
-        <a className="volver" href="/login">
+        <Link className="volver" to="/login">
           Volver
           <img src={arrow} alt="Volver" />
-        </a>
+        </Link>
 
       </div>
 
