@@ -8,6 +8,7 @@ import heart from "../../assets/images/heart.svg";
 function SeccionHombres() {
 
   const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -27,16 +28,51 @@ function SeccionHombres() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const res = await api.get("/productos");
+        setCargando(true);
+
+        // Verificar si hay token
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.log("No hay token, cargando productos sin autenticación...");
+          // Intentar cargar productos sin autenticación
+          const res = await api.get("/productos");
+          const hombres = res.data.filter(
+            (p) => p.categoriaNombre === "Hombre"
+          );
+          setProductos(hombres);
+          setCargando(false);
+          return;
+        }
+
+        // Con autenticación
+        const res = await api.get("/productos", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
 
         const hombres = res.data.filter(
           (p) => p.categoriaNombre === "Hombre"
         );
 
         setProductos(hombres);
+        setCargando(false);
 
       } catch (error) {
         console.log("Error cargando productos:", error);
+        setCargando(false);
+
+        // Si hay error de autenticación, intentar sin token
+        try {
+          const res = await api.get("/productos");
+          const hombres = res.data.filter(
+            (p) => p.categoriaNombre === "Hombre"
+          );
+          setProductos(hombres);
+        } catch (err) {
+          console.log("Error cargando productos sin autenticación:", err);
+        }
       }
     };
 
@@ -50,6 +86,20 @@ function SeccionHombres() {
     p.nombre.toLowerCase().includes(filter.toLowerCase())
   );
 
+  // Mostrar loading mientras carga
+  if (cargando) {
+    return (
+      <div className="seccion-hombres">
+        <div className="titulo">
+          <p>HOMBRE</p>
+        </div>
+        <div className="loading-container">
+          <p>Cargando productos...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="seccion-hombres">
 
@@ -59,40 +109,44 @@ function SeccionHombres() {
 
       <div className="chaquetas-container">
 
-        {productosFiltrados.map((item) => (
-          <div
-            className="chaqueta"
-            key={item.id}
-            onClick={() => navigate(`/producto/${item.id}`)}
-            style={{ cursor: "pointer" }}
-          >
-
-            <img
-              src={item.imagen_url}
-              alt={item.nombre}
-              className="chaqueta-img"
-            />
-
-            <div className="chaqueta-info">
-
-              <p className="chaqueta-name">
-                {item.nombre}
-              </p>
-
-              <p className="chaqueta-price">
-                {item.precio}€
-              </p>
+        {productosFiltrados.length === 0 ? (
+          <p className="no-productos">No hay productos disponibles</p>
+        ) : (
+          productosFiltrados.map((item) => (
+            <div
+              className="chaqueta"
+              key={item.id}
+              onClick={() => navigate(`/producto/${item.id}`)}
+              style={{ cursor: "pointer" }}
+            >
 
               <img
-                src={heart}
-                alt="favorito"
-                className="chaqueta-heart"
+                src={item.imagen_url}
+                alt={item.nombre}
+                className="chaqueta-img"
               />
 
-            </div>
+              <div className="chaqueta-info">
 
-          </div>
-        ))}
+                <p className="chaqueta-name">
+                  {item.nombre}
+                </p>
+
+                <p className="chaqueta-price">
+                  {item.precio}€
+                </p>
+
+                <img
+                  src={heart}
+                  alt="favorito"
+                  className="chaqueta-heart"
+                />
+
+              </div>
+
+            </div>
+          ))
+        )}
 
       </div>
 
