@@ -4,6 +4,7 @@ import { useState } from "react";
 import logo from "../../assets/images/Logo.png";
 import user from "../../assets/images/user.svg";
 import userCheck from "../../assets/images/user-check.svg";
+import menu from "../../assets/images/align-right.svg";
 import bag from "../../assets/images/shopping-bag.svg";
 import arrow from "../../assets/images/arrow-left.svg";
 import filterIcon from "../../assets/images/settings.svg";
