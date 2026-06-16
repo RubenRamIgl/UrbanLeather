@@ -148,7 +148,7 @@ function MenuDatosAdmin() {
         setProductoEditando(producto);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error buscando producto:", error);
       mostrarMensaje("Error buscando producto", "error");
     }
   };
@@ -191,7 +191,7 @@ function MenuDatosAdmin() {
       });
       setImagenFile(null);
     } catch (err) {
-      console.log(err);
+      console.error("Error al crear producto:", err);
       mostrarMensaje("Error al crear producto", "error");
     }
   };
@@ -237,131 +237,73 @@ function MenuDatosAdmin() {
   };
 
   // =========================
-  // BUSCAR USUARIO (VER / EDITAR / ELIMINAR) - CON LOGS SOLO PARA ELIMINAR
+  // BUSCAR USUARIO (VER / EDITAR / ELIMINAR)
   // =========================
   const handleBuscarUsuario = async () => {
     try {
-      console.log("=== INICIO handleBuscarUsuario ===");
-      console.log("Modo actual:", modoUsuario);
-      console.log("SearchUsername:", searchUsername);
-      console.log("Tipo de searchUsername:", typeof searchUsername);
-
       if (!searchUsername.trim()) {
-        console.log("ERROR: Username vacio o solo espacios");
         mostrarMensaje("Introduce un username", "error");
         return;
       }
 
       const trimmedUsername = searchUsername.trim();
-      console.log("Username trimmeado:", trimmedUsername);
-
       const token = localStorage.getItem("token");
-      console.log("Token existe:", token ? "SI" : "NO");
-      if (token) {
-        console.log("Token (primeros 20 caracteres):", token.substring(0, 20) + "...");
-      } else {
-        console.log("ERROR: No hay token de autenticacion");
-        mostrarMensaje("No estas autenticado. Inicia sesion.", "error");
+
+      if (!token) {
+        mostrarMensaje("No estás autenticado. Inicia sesión.", "error");
         return;
       }
 
       // =========================
-      // MODO ELIMINAR - CON LOGS DETALLADOS
+      // MODO ELIMINAR
       // =========================
       if (modoUsuario === "eliminar") {
-        console.log("=== INICIO ELIMINACION DE USUARIO ===");
-        console.log("Username a eliminar:", trimmedUsername);
-        console.log("URL completa:", "/usuarioDelete/" + trimmedUsername);
-        console.log("Metodo: DELETE");
-
         try {
-          console.log("Enviando peticion DELETE...");
-          const startTime = Date.now();
-
-          const response = await api.delete(`/usuarioDelete/${trimmedUsername}`, {
+          await api.delete(`/usuarioDelete/${trimmedUsername}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             }
           });
 
-          const endTime = Date.now();
-          console.log("Tiempo de respuesta:", (endTime - startTime), "ms");
-
-          console.log("RESPUESTA DEL SERVIDOR:");
-          console.log("Status:", response.status);
-          console.log("Status Text:", response.statusText);
-          console.log("Data:", response.data);
-
           mostrarMensaje(`Usuario ${trimmedUsername} eliminado correctamente`, "success");
           setShowBuscarUsuario(false);
           setModoUsuario(null);
           setSearchUsername("");
 
-          console.log("=== ELIMINACION COMPLETADA CON EXITO ===");
-
         } catch (error) {
-          console.log("=== ERROR EN ELIMINACION DE USUARIO ===");
+          console.error("Error al eliminar usuario:", error);
 
           if (error.response) {
-            console.log("Error del servidor:");
-            console.log("Status:", error.response.status);
-            console.log("Status Text:", error.response.statusText);
-            console.log("Data:", error.response.data);
-            console.log("URL:", error.config?.url);
-            console.log("Metodo:", error.config?.method);
-
             if (error.response.status === 404) {
-              console.log("ERROR 404: Endpoint no encontrado");
-              console.log("URL completa:", error.config?.baseURL + error.config?.url);
-              mostrarMensaje("Error: El endpoint no existe. Revisa la URL.", "error");
-            } else if (error.response.status === 500) {
-              console.log("ERROR 500: Error interno del servidor");
-              console.log("Mensaje del servidor:", error.response.data);
-              mostrarMensaje("Error interno del servidor. Revisa los logs.", "error");
+              mostrarMensaje("Usuario no encontrado", "error");
             } else if (error.response.status === 403) {
-              console.log("ERROR 403: No tienes permiso para eliminar este usuario");
               mostrarMensaje("No tienes permisos para eliminar este usuario", "error");
             } else if (error.response.status === 401) {
-              console.log("ERROR 401: Token invalido o expirado");
-              mostrarMensaje("Sesion expirada. Inicia sesion nuevamente.", "error");
+              mostrarMensaje("Sesión expirada. Inicia sesión nuevamente.", "error");
             } else {
-              console.log("Error:", error.response.status, error.response.statusText);
-              mostrarMensaje(`Error ${error.response.status}: ${error.response.data || 'Error desconocido'}`, "error");
+              mostrarMensaje(`Error ${error.response.status}: No se pudo eliminar el usuario`, "error");
             }
           } else if (error.request) {
-            console.log("No se recibio respuesta del servidor");
-            console.log("URL:", error.config?.url);
-            mostrarMensaje("Error de conexion. Verifica tu red.", "error");
+            mostrarMensaje("Error de conexión. Verifica tu red.", "error");
           } else {
-            console.log("Error al configurar la peticion:");
-            console.log("Mensaje:", error.message);
-            mostrarMensaje(`Error: ${error.message}`, "error");
+            mostrarMensaje("Error al eliminar el usuario", "error");
           }
-
-          console.log("Stack trace:", error.stack);
-          console.log("=== FIN ERROR ELIMINACION ===");
         }
-
-        console.log("=== FIN handleBuscarUsuario (eliminar) ===");
         return;
       }
 
       // =========================
       // MODO VER/EDITAR USUARIO
       // =========================
-      console.log("Buscando informacion del usuario:", trimmedUsername);
-
       const res = await api.get(`/miPerfil?username=${trimmedUsername}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      console.log("Usuario encontrado:", res.data);
       setUsuario(res.data);
       setShowBuscarUsuario(false);
 
       if (modoUsuario === "preEditar") {
-        console.log("Modo editar activado");
         setModoUsuario("editar");
         return;
       }
@@ -369,29 +311,19 @@ function MenuDatosAdmin() {
       setModoUsuario("ver");
 
       try {
-        console.log("Buscando direccion del usuario...");
         const direccionRes = await api.get(`/miDireccion?username=${trimmedUsername}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setDireccion(direccionRes.data);
-        console.log("Direccion encontrada:", direccionRes.data);
       } catch (err) {
-        console.log("Usuario sin direccion registrada");
         setDireccion(null);
       }
     } catch (error) {
-      console.log("Error al buscar usuario:");
-      if (error.response) {
-        console.log("Status:", error.response.status);
-        console.log("Data:", error.response.data);
-        if (error.response.status === 404) {
-          mostrarMensaje("Usuario no encontrado", "error");
-        } else {
-          mostrarMensaje("Error al buscar usuario", "error");
-        }
+      console.error("Error al buscar usuario:", error);
+      if (error.response?.status === 404) {
+        mostrarMensaje("Usuario no encontrado", "error");
       } else {
-        console.log("Error:", error.message);
-        mostrarMensaje("Error de conexion al buscar usuario", "error");
+        mostrarMensaje("Error al buscar usuario", "error");
       }
     }
   };
@@ -406,7 +338,7 @@ function MenuDatosAdmin() {
       mostrarMensaje("Usuario actualizado correctamente", "success");
       setModoUsuario(null);
     } catch (error) {
-      console.log(error);
+      console.error("Error al actualizar usuario:", error);
       mostrarMensaje("Error al actualizar usuario", "error");
     }
   };
@@ -425,7 +357,8 @@ function MenuDatosAdmin() {
       const tallasRes = await api.get(`/tallas/producto/${prod.id}`);
       setTallasStock(Array.isArray(tallasRes.data) ? tallasRes.data : []);
     } catch (err) {
-      console.log(err);
+      console.error("Error al buscar producto:", err);
+      mostrarMensaje("Error al buscar producto", "error");
     }
   };
 
@@ -454,8 +387,6 @@ function MenuDatosAdmin() {
       const res = await api.get(`/detalleCompra/misDetalles?username=${searchUsername}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
-      console.log("Respuesta completa:", res.data);
 
       if (Array.isArray(res.data)) {
         setComprasUsuario(res.data);
