@@ -221,14 +221,3 @@
     flex-direction: column;
     align-items: center;
 }
-
-.eliminar-cuenta {
-  color: #ff4444 !important;
-  border-bottom: 2px solid #ff4444 !important;
-}
-
-.eliminar-cuenta:hover {
-  color: #cc0000 !important;
-  border-bottom-color: #cc0000 !important;
-  transform: scale(1.05);
-}
